@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vera — Il tuo Super Tutor di Educazione Artistica</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+  :root {
+    --bg: #120b19;
+    --surface: #1f1630;
+    --surface-accent: #29203e;
+    --border: #402e5b;
+    --ink: #f8fafc;
+    --ink-soft: #b3a4c9;
+
+    --purple: #a855f7;
+    --purple-glow: rgba(168, 85, 247, 0.25);
+    --pink: #ec4899;
+    --gold: #f59e0b;
+
+    --radius: 16px;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-neon: 0 0 15px rgba(168, 85, 247, 0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #1a1025, var(--surface));
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .logo {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+    animation: pulse 3s infinite alternate;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+    100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(236, 72, 153, 0.6); }
+  }
+  .header-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 700;
+    background: linear-gradient(to right, #ffffff, var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-text p { font-size: 13px; color: var(--ink-soft); margin-top: 2px; font-weight: 500; }
+
+  .main-layout { flex: 1; display: flex; overflow: hidden; min-height: 0; background: #0e0813; }
+
+  .chat-column { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; }
+
+  .sidebar {
+    width: 340px; flex-shrink: 0;
+    background: #170f22;
+    border-right: 2px solid var(--border);
+    display: flex; flex-direction: column;
+    height: 100%; overflow-y: auto;
+  }
+  @media (max-width: 850px) { .sidebar { display: none; } }
+
+  .sidebar-header {
+    padding: 16px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--purple);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .sidebar-content-inner { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  .opera-loading { font-size: 13px; color: var(--ink-soft); text-align: center; padding: 20px 0; }
+
+  .opera-img {
+    width: 100%; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: block;
+  }
+
+  .opera-titolo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-top: 4px; }
+  .opera-artista { font-size: 13px; color: var(--purple); font-weight: 600; }
+  .opera-data { font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; }
+
+  .art-card {
+    background: var(--surface);
+    padding: 16px; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .art-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; margin-bottom: 8px; color: var(--pink);
+  }
+  .art-card-text { font-size: 13.5px; line-height: 1.6; color: #e5d9f5; }
+
+  .chat { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; height: 100%; }
+
+  .welcome {
+    text-align: center; padding: 40px 20px;
+    background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+    border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05);
+    max-width: 600px; margin: 20px auto; flex-shrink: 0;
+  }
+  .welcome .big-icon { font-size: 54px; margin-bottom: 16px; animation: float 4s ease-in-out infinite; display: inline-block; }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  .welcome h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+  .welcome p { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 480px; margin: 0 auto; }
+  .suggestions { display: flex; flex-direction: column; gap: 10px; margin-top: 26px; }
+  .suggestion {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-align: left; color: #e5d9f5; transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .suggestion:hover { border-color: var(--purple); background: var(--surface-accent); transform: scale(1.01) translateX(4px); color: #fff; }
+
+  .msg { display: flex; gap: 14px; max-width: 85%; }
+  .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .msg.user .avatar { background: #3b2a52; border: 1.5px solid #5b4380; }
+  .msg.ai .avatar { background: linear-gradient(135deg, var(--purple), var(--pink)); border: 1.5px solid #d946ef; }
+
+  .bubble {
+    padding: 14px 18px; border-radius: 20px; font-size: 15px; line-height: 1.65;
+    border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); width: 100%;
+  }
+  .msg.user .bubble { background: linear-gradient(135deg, #2e1a45, #451065); border-color: #6d28d9; border-radius: 20px 4px 20px 20px; color: #f3e8ff; }
+  .msg.ai .bubble { background: var(--surface); border-radius: 4px 20px 20px 20px; }
+  .bubble strong { color: var(--pink); font-weight: 700; }
+
+  .bubble-img {
+    width: 100%; max-width: 420px; border-radius: 12px;
+    margin-bottom: 12px; display: block; border: 1px solid var(--border);
+  }
+
+  .typing { display: flex; gap: 6px; padding: 12px 16px; align-items: center; }
+  .typing span { width: 8px; height: 8px; background: var(--purple); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; background: var(--pink); }
+  .typing span:nth-child(3) { animation-delay: 0.4s; background: var(--purple); }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+
+  .input-area { padding: 16px 24px; background: #170f22; border-top: 2px solid var(--border); flex-shrink: 0; }
+  .input-row { display: flex; gap: 12px; align-items: flex-end; max-width: 1000px; margin: 0 auto; width: 100%; }
+  textarea {
+    flex: 1; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
+    color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; padding: 12px 16px;
+    resize: none; outline: none; min-height: 48px; max-height: 120px; overflow-y: auto; line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--purple); box-shadow: 0 0 12px rgba(168, 85, 247, 0.2); background: var(--surface-accent); }
+  textarea::placeholder { color: #8672a3; }
+
+  .send-btn {
+    width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--purple), var(--pink));
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0; color: #fff; transition: all 0.2s;
+  }
+  .send-btn:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4); }
+  .send-btn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
+  .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
+  <div class="logo">🎨</div>
+  <div class="header-text">
+    <h1>Vera</h1>
+    <p>🖼️ Educazione Artistica · Scuole Medie</p>
+  </div>
+</header>
+
+<div class="main-layout">
+
+<aside class="sidebar">
+  <div class="sidebar-header">🖼️ Opera del giorno</div>
+  <div class="sidebar-content-inner" id="operaContent">
+    <div class="opera-loading">🎨 Sto scegliendo l'opera di oggi...</div>
+  </div>
+</aside>
+
+<div class="chat-column">
+  <div class="chat" id="chat">
+    <div class="welcome" id="welcome">
+      <div class="big-icon">🎨</div>
+      <h2>Pronto a scoprire l'arte?</h2>
+      <p>Sono Vera, la tua tutor d'arte. Chiedimi di un artista, un'opera o un movimento e ti mostro immagini vere da musei reali!</p>
+      <div class="suggestions">
+        <button class="suggestion" onclick="sendSuggestion(this)"><span>🌻</span>Mostrami un quadro di Van Gogh</button>
+        <button class="suggestion" onclick="sendSuggestion(this)"><span>🖌️</span>Cos'è l'Impressionismo?</button>
+        <button class="suggestion" onclick="sendSuggestion(this)"><span>🗿</span>Fammi vedere un'opera del Rinascimento</button>
+        <button class="suggestion" onclick="sendSuggestion(this)"><span>🎭</span>Cosa significa "prospettiva" in pittura?</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-row">
+      <textarea id="input" placeholder="Chiedi qualcosa a Vera... (es. mostrami un'opera di Monet)" rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">🎨</button>
+    </div>
+    <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
+  </div>
+</div><!-- /chat-column -->
+
+</div><!-- /main-layout -->
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const welcome = document.getElementById('welcome');
+let history = [];
+
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+});
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+function sendSuggestion(btn) {
+  const text = btn.textContent.trim().replace(/^.\s/, '');
+  input.value = text;
+  sendMessage();
+}
+
+async function caricaOperaDelGiorno() {
+  const el = document.getElementById('operaContent');
+  try {
+    const res = await fetch('/opera-del-giorno');
+    const o = await res.json();
+    if (o.errore) throw new Error(o.errore);
+
+    el.innerHTML = `
+      <img class="opera-img" src="${o.immagine_url}" alt="${o.titolo}">
+      <div class="opera-titolo">${o.titolo}</div>
+      <div class="opera-artista">${o.artista || 'Artista sconosciuto'}</div>
+      <div class="opera-data">${o.data || ''} · ${o.movimento}</div>
+
+      <div class="art-card">
+        <div class="art-card-title">✨ Descrizione</div>
+        <div class="art-card-text">${o.descrizione}</div>
+      </div>
+      <div class="art-card">
+        <div class="art-card-title">🖌️ Curiosità tecnica</div>
+        <div class="art-card-text">${o.curiosita_tecnica}</div>
+      </div>
+      <div class="art-card">
+        <div class="art-card-title">👀 Osserva bene</div>
+        <div class="art-card-text">${o.domanda_osservazione}</div>
+      </div>
+      <div class="art-card">
+        <div class="art-card-title">📜 Contesto storico</div>
+        <div class="art-card-text">${o.contesto_storico}</div>
+      </div>
+    `;
+  } catch (err) {
+    el.innerHTML = '<div class="opera-loading">Opera del giorno non disponibile al momento.</div>';
+  }
+}
+caricaOperaDelGiorno();
+
+function addMessage(role, content, immagineUrl) {
+  if (welcome) welcome.style.display = 'none';
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = role === 'user' ? '👤' : '🎨';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+
+  let html = '';
+  if (immagineUrl) {
+    html += `<img class="bubble-img" src="${immagineUrl}" alt="Opera d'arte">`;
+  }
+  html += formatContent(content);
+  bubble.innerHTML = html;
+
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return bubble;
+}
+
+function addTyping() {
+  const msg = document.createElement('div');
+  msg.className = 'msg ai'; msg.id = 'typing';
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar'; avatar.textContent = '🎨';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble typing';
+  bubble.innerHTML = '<span></span><span></span><span></span>';
+  msg.appendChild(avatar); msg.appendChild(bubble);
+  chat.appendChild(msg); chat.scrollTop = chat.scrollHeight;
+}
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function formatContent(text) {
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || sendBtn.disabled) return;
+  input.value = ''; input.style.height = 'auto';
+  sendBtn.disabled = true;
+
+  addMessage('user', text);
+  history.push({ role: 'user', content: text });
+  addTyping();
+
+  try {
+    const res = await fetch('/chat-arte', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    });
+    const data = await res.json();
+    const reply = data.reply || 'Errore nella risposta.';
+    removeTyping();
+    addMessage('ai', reply, data.immagine_url);
+    history.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    removeTyping();
+    addMessage('ai', 'Errore di connessione. Riprova.');
+  }
+  sendBtn.disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>
