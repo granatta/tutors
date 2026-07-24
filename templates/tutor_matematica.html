@@ -116,6 +116,39 @@
     box-shadow: var(--shadow-neon);
   }
 
+  /* ---- Barra dei Tab ---- */
+  .tabs-bar {
+    display: flex;
+    background: #0c1120;
+    border-bottom: 2px solid var(--border);
+    padding: 0 24px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-btn:hover { color: #fff; }
+
+  .tab-btn.active {
+    color: var(--cyan);
+    border-bottom-color: var(--cyan);
+  }
+
   /* ---- Layout Principale ---- */
   .main-layout {
     flex: 1;
@@ -123,6 +156,18 @@
     overflow: hidden;
     min-height: 0;
     background: #090d16;
+  }
+
+  .tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .tab-content.active-content {
+    display: flex;
   }
 
   /* La colonna della chat occupa tutto lo spazio verticale e non collassa */
@@ -140,53 +185,28 @@
     background: #111827;
     border-right: 2px solid var(--border);
     display: flex; flex-direction: column;
-    height: 100%;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .sidebar.geogebra-active {
-    width: 460px;
+    height: 100%; overflow-y: auto;
   }
   @media (max-width: 850px) { .sidebar { display: none; } }
 
-  .sidebar-tabs {
-    display: flex;
+  .sidebar-header {
+    padding: 16px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--cyan);
     border-bottom: 2px solid var(--border);
-    flex-shrink: 0;
-    background: var(--surface);
-    padding: 6px;
-    gap: 6px;
-  }
-  .sidebar-tab {
-    flex: 1;
-    padding: 12px 8px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px; font-weight: 700;
-    color: var(--ink-soft);
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .sidebar-tab:hover { color: #fff; background: var(--surface-accent); }
-  .sidebar-tab.active {
-    color: #fff;
-    background: linear-gradient(135deg, var(--purple), #7e22ce);
-    box-shadow: 0 4px 12px var(--purple-glow);
   }
 
-  .sidebar-content { flex: 1; overflow-y: auto; }
   .sidebar-content-inner {
     padding: 16px; display: flex; flex-direction: column; gap: 16px;
   }
 
-  .geogebra-pane {
-    padding: 0;
+  /* ---- Tab Disegno / GeoGebra (a tutta pagina, come Draw.Chat) ---- */
+  .draw-frame-wrap {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 100%;
   }
   .geogebra-hint {
     font-size: 12px;
@@ -201,6 +221,7 @@
   #ggb-element {
     flex: 1;
     min-height: 0;
+    width: 100%;
     background: #ffffff;
   }
 
@@ -386,65 +407,66 @@
   </div>
 </header>
 
-<div class="topics" id="topics">
-  <div class="topic-chip active" data-topic="">🎮 Tutto</div>
-  <div class="topic-chip" data-topic="algebra">➗ Algebra</div>
-  <div class="topic-chip" data-topic="geometria">📐 Geometria</div>
-  <div class="topic-chip" data-topic="frazioni">🍕 Frazioni</div>
-  <div class="topic-chip" data-topic="proporzioni">⚖️ Proporzioni</div>
-  <div class="topic-chip" data-topic="fisica">🚀 Fisica</div>
-  <div class="topic-chip" data-topic="chimica">🧪 Chimica</div>
-  <div class="topic-chip" data-topic="biologia">🌿 Biologia</div>
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('chatTab', this)">💬 Chat & Tutor</button>
+  <button class="tab-btn" onclick="switchTab('drawTab', this)">📐 Disegna (GeoGebra)</button>
 </div>
 
 <div class="main-layout">
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-tabs">
-    <button class="sidebar-tab active" id="tabAlmanacco" onclick="mostraTab('almanacco')">
-      📅 Almanacco
-    </button>
-    <button class="sidebar-tab" id="tabGeogebra" onclick="mostraTab('geogebra')">
-      📐 Lab Disegno
-    </button>
-  </div>
-
-  <div class="sidebar-content" id="almanaccoPane">
-    <div class="sidebar-content-inner" id="almanaccoContent">
-      <div class="almanacco-loading">⚡ Caricamento missioni e curiosità del giorno...</div>
-    </div>
-  </div>
-
-  <div class="sidebar-content geogebra-pane" id="geogebraPane" style="display:none;">
-    <div class="geogebra-hint">🛠️ Spazio Geometria: usa gli strumenti sotto per disegnare quello che ti suggerisce Luca!</div>
-    <div id="ggb-element"></div>
-  </div>
-</aside>
-
-<div class="chat-column">
-  <!-- L'area chat ora gestisce lo scroll verticale di formule, spiegazioni ed esempi in modo nativo -->
-  <div class="chat" id="chat">
-    <div class="welcome" id="welcome">
-      <div class="big-icon">🤖</div>
-      <h2>Pronto a metterti in gioco in Mat &amp; Scienze?</h2>
-      <p>Sono Luca, il tuo tutor AI. Spiegazioni semplici, trucchi veloci e zero noia. Chiedimi qualsiasi cosa!</p>
-      <div class="suggestions">
-        <button class="suggestion" onclick="sendSuggestion(this)"><span>➗</span>Come si risolvono le equazioni di primo grado?</button>
-        <button class="suggestion" onclick="sendSuggestion(this)"><span>🔺</span>Come si calcola l'area di un triangolo?</button>
-        <button class="suggestion" onclick="sendSuggestion(this)"><span>⚡</span>Cos'è la velocità media? Dammi un esempio</button>
-        <button class="suggestion" onclick="sendSuggestion(this)"><span>🧬</span>Spiega la differenza tra cellula animale e vegetale</button>
+  <!-- TAB CHAT -->
+  <div id="chatTab" class="tab-content active-content">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">📅 Almanacco del giorno</div>
+      <div class="sidebar-content-inner" id="almanaccoContent">
+        <div class="almanacco-loading">⚡ Caricamento missioni e curiosità del giorno...</div>
       </div>
-    </div>
-  </div>
+    </aside>
 
-  <div class="input-area">
-    <div class="input-row">
-      <textarea id="input" placeholder="Chiedi qualcosa a Luca... (es. un esercizio che non ti viene!)" rows="1"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">🚀</button>
+    <div class="chat-column">
+      <div class="topics" id="topics">
+        <div class="topic-chip active" data-topic="">🎮 Tutto</div>
+        <div class="topic-chip" data-topic="algebra">➗ Algebra</div>
+        <div class="topic-chip" data-topic="geometria">📐 Geometria</div>
+        <div class="topic-chip" data-topic="frazioni">🍕 Frazioni</div>
+        <div class="topic-chip" data-topic="proporzioni">⚖️ Proporzioni</div>
+        <div class="topic-chip" data-topic="fisica">🚀 Fisica</div>
+        <div class="topic-chip" data-topic="chimica">🧪 Chimica</div>
+        <div class="topic-chip" data-topic="biologia">🌿 Biologia</div>
+      </div>
+
+      <!-- L'area chat ora gestisce lo scroll verticale di formule, spiegazioni ed esempi in modo nativo -->
+      <div class="chat" id="chat">
+        <div class="welcome" id="welcome">
+          <div class="big-icon">🤖</div>
+          <h2>Pronto a metterti in gioco in Mat &amp; Scienze?</h2>
+          <p>Sono Luca, il tuo tutor AI. Spiegazioni semplici, trucchi veloci e zero noia. Chiedimi qualsiasi cosa!</p>
+          <div class="suggestions">
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>➗</span>Come si risolvono le equazioni di primo grado?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🔺</span>Come si calcola l'area di un triangolo?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>⚡</span>Cos'è la velocità media? Dammi un esempio</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🧬</span>Spiega la differenza tra cellula animale e vegetale</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <textarea id="input" placeholder="Chiedi qualcosa a Luca... (es. un esercizio che non ti viene!)" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">🚀</button>
+        </div>
+        <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
+      </div>
+    </div><!-- /chat-column -->
+  </div><!-- /chatTab -->
+
+  <!-- TAB DISEGNO / GEOGEBRA (a tutta pagina) -->
+  <div id="drawTab" class="tab-content">
+    <div class="draw-frame-wrap">
+      <div class="geogebra-hint">🛠️ Spazio Geometria: usa gli strumenti qui sotto per disegnare quello che ti suggerisce Luca!</div>
+      <div id="ggb-element"></div>
     </div>
-    <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
-  </div>
-</div><!-- /chat-column -->
+  </div><!-- /drawTab -->
 
 </div><!-- /main-layout -->
 
@@ -478,47 +500,60 @@ function sendSuggestion(btn) {
   sendMessage();
 }
 
-function mostraTab(tab) {
-  const sidebar = document.getElementById('sidebar');
-  const almPane = document.getElementById('almanaccoPane');
-  const ggbPane = document.getElementById('geogebraPane');
-  const tabAlm = document.getElementById('tabAlmanacco');
-  const tabGgb = document.getElementById('tabGeogebra');
+function switchTab(tabId, element) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
 
-  if (tab === 'almanacco') {
-    almPane.style.display = '';
-    ggbPane.style.display = 'none';
-    tabAlm.classList.add('active');
-    tabGgb.classList.remove('active');
-    sidebar.classList.remove('geogebra-active');
-  } else {
-    almPane.style.display = 'none';
-    ggbPane.style.display = 'flex';
-    tabAlm.classList.remove('active');
-    tabGgb.classList.add('active');
-    sidebar.classList.add('geogebra-active');
+  element.classList.add('active');
+  document.getElementById(tabId).classList.add('active-content');
+
+  if (tabId === 'drawTab') {
     if (!ggbInizializzato) {
-      inizializzaGeogebra();
       ggbInizializzato = true;
+      // Piccolo ritardo per assicurarsi che il contenitore abbia già le sue dimensioni finali
+      setTimeout(inizializzaGeogebra, 50);
+    } else if (ggbApplet) {
+      const el = document.getElementById('ggb-element');
+      ggbApplet.setSize(el.clientWidth, el.clientHeight);
     }
   }
 }
 
+function apriLabDisegno() {
+  const drawBtn = document.querySelectorAll('.tab-btn')[1];
+  switchTab('drawTab', drawBtn);
+}
+
 let ggbInizializzato = false;
+let ggbApplet = null;
 function inizializzaGeogebra() {
+  const el = document.getElementById('ggb-element');
   const params = {
     appName: 'geometry',
-    width: 440,
-    height: 520,
+    width: el.clientWidth,
+    height: el.clientHeight,
     showToolBar: true,
     showAlgebraInput: false,
     showMenuBar: false,
     showResetIcon: true,
-    language: 'it'
+    language: 'it',
+    showGrid: true,
+    showAxes: true,
+    allowStyleBar: true,
+    enableRightClick: true,
+    appletOnLoad: (api) => { ggbApplet = api; }
   };
   const applet = new GGBApplet(params, true);
   applet.inject('ggb-element');
 }
+
+// Adatta l'area di disegno GeoGebra se la finestra viene ridimensionata
+window.addEventListener('resize', () => {
+  if (ggbApplet && document.getElementById('drawTab').classList.contains('active-content')) {
+    const el = document.getElementById('ggb-element');
+    ggbApplet.setSize(el.clientWidth, el.clientHeight);
+  }
+});
 
 async function caricaAlmanacco() {
   const el = document.getElementById('almanaccoContent');
@@ -594,7 +629,7 @@ function formatContent(text) {
     `<div class="draw-box">
       <div class="draw-label">📐 Lab Geometria Attivo!</div>
       <div class="draw-text">${inner.trim()}</div>
-      <button class="draw-btn" onclick="mostraTab('geogebra')">Apri Area Disegno →</button>
+      <button class="draw-btn" onclick="apriLabDisegno()">Apri Area Disegno →</button>
     </div>`);
   text = text.replace(/<ERRORE>([\s\S]*?)<\/ERRORE>/g, (_, inner) =>
     `<div class="error-box"><div class="error-label">⚠ Spot l'errore!</div>${inner.trim()}</div>`);
