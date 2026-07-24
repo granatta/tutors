@@ -69,19 +69,12 @@ TOOLS = [
 # Helper: ricerca opere su ArtIC
 # ---------------------------------------------------------------------------
 
-def _immagine_raggiungibile(image_url):
-    """Verifica con una HEAD request che l'immagine IIIF sia davvero disponibile."""
-    try:
-        resp = requests.head(image_url, timeout=6, allow_redirects=True)
-        return resp.status_code == 200
-    except requests.RequestException:
-        return False
-
-
 def cerca_opera_artic(query):
     """Cerca un'opera di pubblico dominio con immagine su ArtIC. Restituisce un dict pronto per il frontend.
-    Prova più candidati finché non ne trova uno la cui immagine sia davvero raggiungibile,
-    invece di fidarsi ciecamente del primo risultato con image_id + is_public_domain."""
+    NB: non verifichiamo la raggiungibilità dell'immagine con una richiesta server-side (Python/requests),
+    perché il servizio IIIF di ArtIC può bloccare le richieste non provenienti da un browser reale anche
+    quando l'immagine è perfettamente valida per l'utente finale. Il controllo di eventuali immagini rotte
+    va quindi fatto lato client (vedi onerror sull'<img> nel frontend)."""
     search_url = f"{ARTIC_API_BASE}/search"
     params = {
         "q": query,
@@ -97,18 +90,15 @@ def cerca_opera_artic(query):
     risultati = data.get("data", [])
     random.shuffle(risultati)
 
-    candidati = [o for o in risultati if o.get("image_id") and o.get("is_public_domain")]
-
-    for opera in candidati[:6]:  # prova al massimo 6 candidati per non rallentare troppo
-        image_url = f"https://www.artic.edu/iiif/2/{opera['image_id']}/full/843,/0/default.jpg"
-        if _immagine_raggiungibile(image_url):
+    for opera in risultati:
+        if opera.get("image_id") and opera.get("is_public_domain"):
+            image_url = f"https://www.artic.edu/iiif/2/{opera['image_id']}/full/843,/0/default.jpg"
             return {
                 "titolo": opera.get("title"),
                 "artista": opera.get("artist_display"),
                 "data": opera.get("date_display"),
                 "immagine_url": image_url
             }
-
     return {"errore": "Nessuna opera trovata per questa ricerca"}
 
 
@@ -149,7 +139,9 @@ def pagina_arte():
 @arte_bp.route("/opera-del-giorno")
 def opera_del_giorno():
     oggi = date.today().isoformat()
-    if os.path.exists(OPERA_FILE):
+    forza_rigenerazione = request.args.get("forza") == "1"
+
+    if not forza_rigenerazione and os.path.exists(OPERA_FILE):
         with open(OPERA_FILE, "r", encoding="utf-8") as f:
             cache = json.load(f)
         if cache.get("data") == oggi:
