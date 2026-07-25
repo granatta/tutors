@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I tuoi Super Tutor — Scuola Media</title>
+<title>I tuoi Super Tutor — Scuole Medie</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
@@ -16,6 +16,7 @@
     --ink-soft: #94a3b8;
     --cyan: #06b6d4;
     --purple: #a855f7;
+    --blue: #2563eb;
     --neon-orange: #ff7a00;
   }
 
@@ -79,6 +80,10 @@
   }
   .tutor-card.matematica .tutor-icon { background: linear-gradient(135deg, var(--cyan), #0891b2); }
   .tutor-card.arte .tutor-icon { background: linear-gradient(135deg, var(--purple), #7e22ce); }
+  .tutor-card.italiano .tutor-icon { background: linear-gradient(135deg, var(--blue), #0ea5e9); }
+  .tutor-card.storia .tutor-icon { background: linear-gradient(135deg, var(--neon-orange), #c2410c); }
+
+
 
   .tutor-card h2 {
     font-family: 'Space Grotesk', sans-serif;
@@ -92,13 +97,17 @@
     color: var(--cyan);
   }
   .tutor-card.arte .go { color: var(--purple); }
+  .tutor-card.italiano .go { color: var(--blue); }
+  .tutor-card.storia .go { color: var(--neon-orange); }
+
 </style>
 </head>
 <body>
 
 <div class="intro">
   <h1>I tuoi Super Tutor 🚀</h1>
-  <p>Scegli la materia con cui vuoi allenarti oggi. Ogni tutor ha il suo almanacco giornaliero e ti aiuta con spiegazioni su misura per te.</p>
+  <p> Scuole Medie </p>
+  <p>Scegli la materia con cui vuoi allenarti oggi. Ogni tutor ha il suo almanacco giornaliero e ti aiuta con spiegazioni su misura per te. </p>
 </div>
 
 <div class="cards">
@@ -115,6 +124,20 @@
     <p>Scopri opere d'arte vere, chiedi di artisti e movimenti, con l'opera del giorno da un museo reale.</p>
     <div class="go">Entra nella chat →</div>
   </a>
+
+   <a href="/grammatica" class="tutor-card italiano">
+    <div class="tutor-icon">📚</div>
+    <h2>Giulia — Italiano </h2>
+    <p>Viaggia nella lingua e letteratura italiana: risolvi analisi logica e del periodo, interroga autori e scopri il testo classico del giorno.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+    <a href="/coming-soon" class="tutor-card storia">
+    <div class="tutor-icon">🏛️</div>
+    <h2>Lucio — Storia</h2>
+    <p>Viaggia nel tempo fino all'Antica Roma e oltre: esplora battaglie, alleanze e la vita quotidiana della gente, con il fatto storico del giorno.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
 </div>
 
 </body>

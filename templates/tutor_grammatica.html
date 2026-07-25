@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giulia — La tua Super Tutor di Italiano</title>
+
+<!-- MathJax (utile per eventuali notazioni, es. numerazione sillabe) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a1410;
+    --surface: #142620;
+    --surface-accent: #1c352c;
+    --border: #2c4d3f;
+    --ink: #f8fafc;
+    --ink-soft: #9fb8ab;
+
+    /* Palette Italiano: verde smeraldo + ambra (libro/inchiostro) */
+    --emerald: #10b981;
+    --emerald-glow: rgba(16, 185, 129, 0.2);
+    --amber: #f59e0b;
+    --amber-glow: rgba(245, 158, 11, 0.25);
+    --teal: #14b8a6;
+    --neon-red: #ef4444;
+
+    --radius: 16px;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-neon: 0 0 15px rgba(16, 185, 129, 0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ---- Header ---- */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #0e1f18, var(--surface));
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 10;
+  }
+  .logo {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--emerald), var(--amber));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+    animation: pulse 3s infinite alternate;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
+    100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+  }
+  .header-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(to right, #ffffff, var(--emerald));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-text p {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  /* ---- Topic chips ---- */
+  .topics {
+    display: flex; gap: 10px;
+    padding: 12px 24px;
+    overflow-x: auto; flex-shrink: 0;
+    background: #0d1a15;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .topics::-webkit-scrollbar { display: none; }
+  .topic-chip {
+    flex-shrink: 0; padding: 8px 16px;
+    border-radius: 20px; font-size: 13px; font-weight: 700;
+    cursor: pointer; border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--ink-soft);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .topic-chip:hover {
+    border-color: var(--emerald); color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--emerald-glow);
+  }
+  .topic-chip.active {
+    background: linear-gradient(135deg, var(--emerald), #0d9268);
+    border-color: #34d399;
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+  }
+
+  /* ---- Barra dei Tab ---- */
+  .tabs-bar {
+    display: flex;
+    background: #0a1712;
+    border-bottom: 2px solid var(--border);
+    padding: 0 24px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-btn:hover { color: #fff; }
+
+  .tab-btn.active {
+    color: var(--emerald);
+    border-bottom-color: var(--emerald);
+  }
+
+  /* ---- Layout Principale ---- */
+  .main-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+    background: #081109;
+  }
+
+  .tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .tab-content.active-content {
+    display: flex;
+  }
+
+  .chat-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+  }
+
+  /* ---- Sidebar ---- */
+  .sidebar {
+    width: 320px; flex-shrink: 0;
+    background: #10201a;
+    border-right: 2px solid var(--border);
+    display: flex; flex-direction: column;
+    height: 100%; overflow-y: auto;
+  }
+  @media (max-width: 850px) { .sidebar { display: none; } }
+
+  .sidebar-header {
+    padding: 16px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--emerald);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .sidebar-content-inner {
+    padding: 16px; display: flex; flex-direction: column; gap: 16px;
+  }
+
+  .almanacco-loading {
+    font-size: 13px; color: var(--ink-soft);
+    text-align: center; padding: 20px 0;
+  }
+
+  .alm-card {
+    background: var(--surface);
+    color: var(--ink);
+    padding: 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .alm-card:hover { transform: translateY(-2px); }
+  .alm-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 5px; }
+  .alm-card:nth-child(4n+1)::before { background: var(--amber); }
+  .alm-card:nth-child(4n+1) .alm-card-title { color: var(--amber); }
+  .alm-card:nth-child(4n+2)::before { background: var(--teal); }
+  .alm-card:nth-child(4n+2) .alm-card-title { color: var(--teal); }
+  .alm-card:nth-child(4n+3)::before { background: var(--emerald); }
+  .alm-card:nth-child(4n+3) .alm-card-title { color: var(--emerald); }
+  .alm-card:nth-child(4n+4)::before { background: #38bdf8; }
+  .alm-card:nth-child(4n+4) .alm-card-title { color: #38bdf8; }
+
+  .alm-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .alm-card-text { font-size: 13.5px; line-height: 1.6; color: #e2e8f0; }
+  .alm-card .alm-toggle {
+    margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--emerald);
+    cursor: pointer; user-select: none; display: inline-block;
+    background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 6px;
+  }
+  .alm-card .alm-soluzione {
+    display: none; margin-top: 12px; padding: 12px; background: var(--surface-accent);
+    border-radius: 8px; border-left: 2px dashed var(--emerald); font-size: 13px; color: #cbd5e1;
+  }
+  .alm-card .alm-soluzione.show { display: block; animation: fadeIn 0.3s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- AREA CHAT ---- */
+  .chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .welcome {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.05);
+    max-width: 600px;
+    margin: 20px auto;
+    flex-shrink: 0;
+  }
+  .welcome .big-icon { font-size: 54px; margin-bottom: 16px; animation: float 4s ease-in-out infinite; display: inline-block; }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  .welcome h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .welcome p { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 480px; margin: 0 auto; }
+  .suggestions { display: flex; flex-direction: column; gap: 10px; margin-top: 26px; }
+  .suggestion {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-align: left; color: #e2e8f0; transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .suggestion:hover { border-color: var(--amber); background: var(--surface-accent); transform: scale(1.01) translateX(4px); color: #fff; }
+
+  .msg { display: flex; gap: 14px; max-width: 85%; }
+  .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .msg.user .avatar { background: #334155; border: 1.5px solid #475569; }
+  .msg.ai .avatar { background: linear-gradient(135deg, var(--emerald), var(--amber)); border: 1.5px solid #34d399; }
+
+  .bubble {
+    padding: 14px 18px; border-radius: 20px; font-size: 15px; line-height: 1.65;
+    border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); width: 100%;
+  }
+  .msg.user .bubble {
+    background: linear-gradient(135deg, #1e2f26, #2a4536); border-color: #2f6b4a;
+    border-radius: 20px 4px 20px 20px; color: #e7f9ee;
+  }
+  .msg.ai .bubble { background: var(--surface); border-radius: 4px 20px 20px 20px; }
+
+  .bubble code {
+    font-family: 'Fira Code', monospace; background: #0d1a15; padding: 2px 6px;
+    border-radius: 6px; font-size: 13.5px; color: #34d399; border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .bubble .step {
+    margin-top: 12px; padding: 12px 16px; background: #0d1a15;
+    border-left: 4px solid var(--amber); border-radius: 8px; font-size: 14px;
+  }
+  .bubble .step-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: #fbbf24; margin-bottom: 6px; text-transform: uppercase; }
+
+  .bubble .error-box {
+    margin-top: 12px; padding: 12px 16px; background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2); border-left: 4px solid var(--neon-red); border-radius: 8px;
+  }
+  .bubble .error-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: #fca5a5; margin-bottom: 6px; text-transform: uppercase; }
+
+  .bubble .draw-box {
+    margin-top: 14px; background: linear-gradient(135deg, #064e3b, #022c22);
+    border: 1px solid #059669; color: #ecfdf5; border-radius: 14px; padding: 16px;
+  }
+  .draw-label { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #34d399; margin-bottom: 8px; }
+  .draw-text { font-style: italic; }
+  .draw-btn {
+    margin-top: 10px;
+    background: var(--emerald); color: #fff; border: none; border-radius: 12px;
+    padding: 8px 16px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  .draw-btn:hover { background: #059669; transform: translateY(-1px); }
+
+  .bubble strong { color: var(--emerald); font-weight: 700; }
+
+  .typing { display: flex; gap: 6px; padding: 12px 16px; align-items: center;}
+  .typing span { width: 8px; height: 8px; background: var(--emerald); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; background: var(--amber); }
+  .typing span:nth-child(3) { animation-delay: 0.4s; background: var(--emerald); }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+
+  /* ---- Input Area ---- */
+  .input-area {
+    padding: 16px 24px;
+    background: #10201a;
+    border-top: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+  .input-row { display: flex; gap: 12px; align-items: flex-end; max-width: 1000px; margin: 0 auto; width: 100%;}
+  textarea {
+    flex: 1; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
+    color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; padding: 12px 16px;
+    resize: none; outline: none; min-height: 48px; max-height: 120px; overflow-y: auto; line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--emerald); box-shadow: 0 0 12px rgba(16, 185, 129, 0.2); background: var(--surface-accent); }
+  textarea::placeholder { color: #64748b; }
+
+  .send-btn {
+    width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--emerald), var(--amber));
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0; color: #fff; transition: all 0.2s;
+  }
+  .send-btn:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4); }
+  .send-btn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
+  .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
+
+  /* ---- Tab Analisi Sintattica ---- */
+  .analisi-wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .interactive-hint {
+    font-size: 12px;
+    color: #6ee7b7;
+    padding: 12px 16px;
+    background: rgba(16, 185, 129, 0.1);
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .analisi-toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 14px 16px;
+    background: #0d1a15;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  #inputFrase {
+    flex: 1;
+    min-width: 220px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+  }
+  #inputFrase:focus { border-color: var(--emerald); box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+  #inputFrase::placeholder { color: #64748b; }
+
+  .analisi-toolbar button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  #analizzaBtn {
+    background: linear-gradient(135deg, var(--emerald), var(--amber));
+    color: #fff;
+  }
+  #analizzaBtn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--emerald-glow); }
+  #analizzaBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .analisi-esempi {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 14px 16px;
+    flex-wrap: wrap;
+    background: #0d1a15;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .esempio-chip {
+    font-size: 12px; font-weight: 600; color: var(--ink-soft);
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .esempio-chip:hover { color: #fff; border-color: var(--emerald); }
+
+  .analisi-corpo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    background: #ffffff;
+    padding: 24px;
+  }
+  #alberoContainer {
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #alberoContainer svg { width: 100%; height: auto; }
+
+  .analisi-stato {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    padding: 40px 0;
+  }
+  .analisi-errore {
+    text-align: center;
+    color: #dc2626;
+    font-size: 14px;
+    padding: 20px 0;
+    font-weight: 600;
+  }
+
+  .legenda-sezione {
+    max-width: 900px;
+    margin: 28px auto 0 auto;
+  }
+  .legenda-sezione-titolo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #0d9268;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid #d1fae5;
+  }
+
+  .legenda-parole {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .legenda-funzione {
+    font-size: 11px;
+    font-weight: 700;
+    color: #b45309;
+    background: #fef3c7;
+    padding: 2px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .legenda-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .legenda-parola {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #0f172a;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+  .legenda-pos {
+    font-size: 11px;
+    font-weight: 700;
+    color: #10b981;
+    background: #d1fae5;
+    padding: 2px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .legenda-testo {
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.5;
+  }
+
+  .word-group text { font-family: 'Plus Jakarta Sans', sans-serif; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
+  <div class="logo">📚</div>
+  <div class="header-text">
+    <h1>Giulia</h1>
+    <p>📖 Italiano · Grammatica &amp; Analisi del testo · Scuole Medie</p>
+  </div>
+</header>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('chatTab', this)">💬 Chat & Tutor</button>
+  <button class="tab-btn" onclick="switchTab('analisiTab', this)">🌳 Analisi Sintattica</button>
+</div>
+
+<div class="main-layout">
+
+  <!-- TAB CHAT -->
+  <div id="chatTab" class="tab-content active-content">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">📖 Almanacco del giorno</div>
+      <div class="sidebar-content-inner" id="almanaccoContent">
+        <div class="almanacco-loading">📚 Caricamento curiosità linguistiche del giorno...</div>
+      </div>
+    </aside>
+
+    <div class="chat-column">
+      <div class="topics" id="topics">
+        <div class="topic-chip active" data-topic="">🎮 Tutto</div>
+        <div class="topic-chip" data-topic="grammatica">🔤 Grammatica</div>
+        <div class="topic-chip" data-topic="analisi-logica">🧩 Analisi logica</div>
+        <div class="topic-chip" data-topic="analisi-periodo">🌳 Analisi del periodo</div>
+        <div class="topic-chip" data-topic="ortografia">✏️ Ortografia</div>
+        <div class="topic-chip" data-topic="lessico">📖 Lessico</div>
+        <div class="topic-chip" data-topic="testo-scritto">📝 Testo scritto</div>
+        <div class="topic-chip" data-topic="poesia">🎭 Poesia</div>
+      </div>
+
+      <div class="chat" id="chat">
+        <div class="welcome" id="welcome">
+          <div class="big-icon">📚</div>
+          <h2>Pronto a mettere in ordine le parole?</h2>
+          <p>Sono Giulia, la tua tutor di italiano. Grammatica, analisi logica e del periodo, lessico e scrittura: chiedimi qualsiasi cosa!</p>
+          <div class="suggestions">
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🧩</span>Qual è la differenza tra soggetto e complemento oggetto?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🌳</span>Analizza la frase: "Io mangio la mela"</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🔤</span>Come si riconosce un verbo transitivo?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>📖</span>Cos'è un complemento di specificazione?</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <textarea id="input" placeholder="Chiedi qualcosa a Giulia... (es. analizza una frase per me)" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">🚀</button>
+        </div>
+        <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
+      </div>
+    </div><!-- /chat-column -->
+  </div><!-- /chatTab -->
+
+  <!-- TAB ANALISI SINTATTICA -->
+  <div id="analisiTab" class="tab-content">
+    <div class="analisi-wrap">
+      <div class="interactive-hint">🌳 Scrivi una frase e Giulia disegnerà l'albero delle relazioni sintattiche: soggetto, predicato, complementi e come si collegano tra loro.</div>
+
+      <div class="analisi-toolbar">
+        <input type="text" id="inputFrase" placeholder="Scrivi una frase da analizzare (es. Io mangio la mela)" maxlength="300">
+        <button id="analizzaBtn" onclick="analizzaFrase()">🔍 Analizza</button>
+      </div>
+
+      <div class="analisi-esempi">
+        <span class="esempio-chip" onclick="usaEsempio(this)">Io mangio la mela</span>
+        <span class="esempio-chip" onclick="usaEsempio(this)">Il gatto nero dorme sul divano</span>
+        <span class="esempio-chip" onclick="usaEsempio(this)">Marco regala un libro a Sara</span>
+        <span class="esempio-chip" onclick="usaEsempio(this)">La maestra spiega la lezione con pazienza</span>
+      </div>
+
+      <div class="analisi-corpo" id="analisiCorpo">
+        <div class="analisi-stato" id="analisiStato">Scrivi una frase qui sopra e premi "Analizza" per vedere l'albero sintattico.</div>
+        <div id="alberoContainer"></div>
+
+        <div class="legenda-sezione" id="sezioneLogica" style="display:none;">
+          <div class="legenda-sezione-titolo">🧩 Analisi logica</div>
+          <div class="legenda-parole" id="legendaLogica"></div>
+        </div>
+
+        <div class="legenda-sezione" id="sezioneGrammaticale" style="display:none;">
+          <div class="legenda-sezione-titolo">🔤 Analisi grammaticale</div>
+          <div class="legenda-parole" id="legendaParole"></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /analisiTab -->
+
+</div><!-- /main-layout -->
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const welcome = document.getElementById('welcome');
+let history = [];
+let activeTopic = '';
+
+const NOMI_FUNZIONE_PREDICATO = { verbale: 'predicato verbale', nominale: 'predicato nominale' };
+
+document.querySelectorAll('.topic-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeTopic = chip.dataset.topic;
+  });
+});
+
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+});
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+function sendSuggestion(btn) {
+  const text = btn.textContent.trim().replace(/^.\s/, '');
+  input.value = text;
+  sendMessage();
+}
+
+function switchTab(tabId, element) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
+
+  element.classList.add('active');
+  document.getElementById(tabId).classList.add('active-content');
+}
+
+/* ---- Apertura scheda Analisi Sintattica da bottone dentro un messaggio ---- */
+function apriLabAnalisi(frase) {
+  const analisiBtn = document.querySelectorAll('.tab-btn')[1];
+  switchTab('analisiTab', analisiBtn);
+  document.getElementById('inputFrase').value = frase;
+  analizzaFrase();
+}
+function apriLabAnalisiDaBottone(btn) {
+  const frase = btn.getAttribute('data-frase') || '';
+  apriLabAnalisi(frase);
+}
+
+function usaEsempio(chip) {
+  document.getElementById('inputFrase').value = chip.textContent.trim();
+  analizzaFrase();
+}
+
+document.getElementById('inputFrase').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); analizzaFrase(); }
+});
+
+/* ---- Motore di analisi sintattica: chiama il backend e disegna l'albero ---- */
+async function analizzaFrase() {
+  const frase = document.getElementById('inputFrase').value.trim();
+  const stato = document.getElementById('analisiStato');
+  const container = document.getElementById('alberoContainer');
+  const legenda = document.getElementById('legendaParole');
+  const btn = document.getElementById('analizzaBtn');
+
+  if (!frase) {
+    stato.textContent = 'Scrivi prima una frase da analizzare.';
+    stato.className = 'analisi-errore';
+    stato.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  container.innerHTML = '';
+  legenda.innerHTML = '';
+  document.getElementById('sezioneLogica').style.display = 'none';
+  document.getElementById('sezioneGrammaticale').style.display = 'none';
+  stato.textContent = '🔎 Sto analizzando la frase...';
+  stato.className = 'analisi-stato';
+  stato.style.display = 'block';
+
+  try {
+    const res = await fetch('/analizza-frase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ frase })
+    });
+    const data = await res.json();
+
+    if (data.errore) {
+      stato.textContent = '⚠️ ' + data.errore;
+      stato.className = 'analisi-errore';
+      stato.style.display = 'block';
+      btn.disabled = false;
+      return;
+    }
+
+    stato.style.display = 'none';
+    disegnaAlberoSintattico('alberoContainer', data.parole, data.archi);
+    disegnaLegendaLogica(data.parole, data.archi, data.predicato);
+    disegnaLegendaGrammaticale(data.parole);
+  } catch (err) {
+    stato.textContent = '⚠️ Errore di connessione, riprova.';
+    stato.className = 'analisi-errore';
+    stato.style.display = 'block';
+  }
+  btn.disabled = false;
+}
+
+function disegnaLegendaGrammaticale(parole) {
+  const container = document.getElementById('legendaParole');
+  container.innerHTML = '';
+  parole.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'legenda-item';
+    item.innerHTML = `
+      <span class="legenda-parola">${p.testo}</span>
+      <span class="legenda-pos">${p.pos}</span>
+      <span class="legenda-testo">${p.analisi}</span>
+    `;
+    container.appendChild(item);
+  });
+  document.getElementById('sezioneGrammaticale').style.display = parole.length ? 'block' : 'none';
+}
+
+function disegnaLegendaLogica(parole, archi, predicato) {
+  const container = document.getElementById('legendaLogica');
+  container.innerHTML = '';
+
+  // Costruisce un'unica lista di voci (predicato + complementi/soggetto dagli archi),
+  // ordinata secondo la posizione della parola nella frase.
+  const voci = [];
+
+  if (predicato && predicato.indice !== null && predicato.indice !== undefined && parole[predicato.indice]) {
+    voci.push({
+      indice: predicato.indice,
+      testo: parole[predicato.indice].testo,
+      funzione: NOMI_FUNZIONE_PREDICATO[predicato.tipo] || 'predicato',
+      riferimento: null
+    });
+  }
+
+  (archi || []).forEach(arco => {
+    const parolaDip = parole[arco.da];
+    const parolaReg = parole[arco.a];
+    if (!parolaDip) return;
+    voci.push({
+      indice: arco.da,
+      testo: parolaDip.testo,
+      funzione: arco.etichetta_it,
+      riferimento: parolaReg ? parolaReg.testo : null
+    });
+  });
+
+  voci.sort((a, b) => a.indice - b.indice);
+
+  if (voci.length === 0) {
+    document.getElementById('sezioneLogica').style.display = 'none';
+    return;
+  }
+
+  voci.forEach(v => {
+    const item = document.createElement('div');
+    item.className = 'legenda-item';
+    const rif = v.riferimento ? ` <span style="color:#94a3b8; font-weight:500;">(si lega a "${v.riferimento}")</span>` : '';
+    item.innerHTML = `
+      <span class="legenda-parola">${v.testo}</span>
+      <span class="legenda-funzione">${v.funzione}</span>
+      <span class="legenda-testo">${rif}</span>
+    `;
+    container.appendChild(item);
+  });
+
+  document.getElementById('sezioneLogica').style.display = 'block';
+}
+
+/**
+ * Disegna un albero di dipendenze sintattiche in stile displaCy,
+ * generato dinamicamente in SVG a partire da un elenco di parole e archi.
+ * parole: [{testo, pos, analisi}], archi: [{da, a, etichetta, etichetta_it}]
+ * "da" = indice della parola dipendente, "a" = indice della parola reggente
+ * (la freccia punta verso la parola reggente).
+ */
+function disegnaAlberoSintattico(containerId, parole, archi) {
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  if (!parole || parole.length === 0) {
+    container.innerHTML = '<div class="analisi-stato">Nessuna parola da mostrare.</div>';
+    return;
+  }
+
+  // --- Posizioni orizzontali delle parole (spaziatura in base alla lunghezza) ---
+  const paddingX = 60;
+  const minSpacing = 100;
+  const posizioni = [];
+  let x = paddingX;
+  parole.forEach(p => {
+    posizioni.push(x);
+    const larghezza = Math.max(minSpacing, p.testo.length * 13 + 70);
+    x += larghezza;
+  });
+  const svgWidth = x + paddingX;
+
+  // --- Livello di annidamento di ogni arco (per calcolare l'altezza) ---
+  function span(arco) { return [Math.min(arco.da, arco.a), Math.max(arco.da, arco.a)]; }
+
+  const ordineArchi = archi.map((_, i) => i).sort((i, j) => {
+    const si = span(archi[i]), sj = span(archi[j]);
+    return (si[1] - si[0]) - (sj[1] - sj[0]);
+  });
+
+  const livelli = new Array(archi.length).fill(0);
+  ordineArchi.forEach(i => {
+    const [s1, e1] = span(archi[i]);
+    let livello = 0;
+    archi.forEach((altro, j) => {
+      if (i === j) return;
+      const [s2, e2] = span(altro);
+      const contenuto = s2 >= s1 && e2 <= e1 && !(s2 === s1 && e2 === e1);
+      if (contenuto) livello = Math.max(livello, livelli[j] + 1);
+    });
+    livelli[i] = livello;
+  });
+
+  const alturaBase = 55;
+  const alturaStep = 38;
+  const livelloMax = archi.length ? Math.max(...livelli) : 0;
+  const spazioArchi = alturaBase + livelloMax * alturaStep + 30;
+  const yParole = spazioArchi + 20;
+  const svgHeight = yParole + 55;
+
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', Math.min(svgHeight, 420));
+  svg.style.display = 'block';
+  svg.style.margin = '0 auto';
+
+  // --- Parole ---
+  parole.forEach((p, i) => {
+    const g = document.createElementNS(svgNS, 'g');
+    g.setAttribute('class', 'word-group');
+
+    const title = document.createElementNS(svgNS, 'title');
+    title.textContent = `${p.testo.toUpperCase()}: ${p.analisi}`;
+    g.appendChild(title);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('fill', '#0f172a');
+    text.setAttribute('y', yParole);
+
+    const tspanWord = document.createElementNS(svgNS, 'tspan');
+    tspanWord.setAttribute('x', posizioni[i]);
+    tspanWord.setAttribute('dy', 0);
+    tspanWord.setAttribute('font-weight', 'bold');
+    tspanWord.setAttribute('font-size', '18px');
+    tspanWord.textContent = p.testo;
+
+    const tspanPos = document.createElementNS(svgNS, 'tspan');
+    tspanPos.setAttribute('x', posizioni[i]);
+    tspanPos.setAttribute('dy', 22);
+    tspanPos.setAttribute('fill', '#94a3b8');
+    tspanPos.setAttribute('font-size', '12px');
+    tspanPos.textContent = p.pos;
+
+    text.appendChild(tspanWord);
+    text.appendChild(tspanPos);
+    g.appendChild(text);
+    svg.appendChild(g);
+  });
+
+  // --- Archi ---
+  const yBase = yParole - 32;
+  archi.forEach((arco, i) => {
+    const xDa = posizioni[arco.da];
+    const xA = posizioni[arco.a];
+    if (xDa === undefined || xA === undefined) return;
+
+    const altezzaArco = alturaBase + livelli[i] * alturaStep;
+    const yTop = yBase - altezzaArco;
+
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', `M${xDa},${yBase} C${xDa},${yTop} ${xA},${yTop} ${xA},${yBase}`);
+    path.setAttribute('stroke', '#0d9268');
+    path.setAttribute('stroke-width', '2px');
+    path.setAttribute('fill', 'none');
+    svg.appendChild(path);
+
+    const label = document.createElementNS(svgNS, 'text');
+    label.setAttribute('fill', '#0d9268');
+    label.setAttribute('font-size', '11px');
+    label.setAttribute('font-weight', '600');
+    label.setAttribute('x', (xDa + xA) / 2);
+    label.setAttribute('y', yTop - 6);
+    label.setAttribute('text-anchor', 'middle');
+    label.textContent = `${arco.etichetta} (${arco.etichetta_it})`;
+    svg.appendChild(label);
+
+    const dim = 6;
+    const polygon = document.createElementNS(svgNS, 'polygon');
+    polygon.setAttribute('points', `${xA},${yBase + 2} ${xA - dim},${yBase - dim} ${xA + dim},${yBase - dim}`);
+    polygon.setAttribute('fill', '#0d9268');
+    svg.appendChild(polygon);
+  });
+
+  container.appendChild(svg);
+}
+
+async function caricaAlmanacco() {
+  const el = document.getElementById('almanaccoContent');
+  try {
+    const res = await fetch('/almanacco-italiano');
+    const a = await res.json();
+
+    el.innerHTML = `
+      <div class="alm-card">
+        <div class="alm-card-title">🧠 Pensiero linguistico</div>
+        <div class="alm-card-text">${a.quesito_laterale}</div>
+        <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Soluzione 👁️‍🗨️</span>
+        <div class="alm-soluzione">${a.soluzione_quesito}</div>
+      </div>
+      <div class="alm-card">
+        <div class="alm-card-title">✨ Super Curiosità</div>
+        <div class="alm-card-text">${a.curiosita}</div>
+      </div>
+      <div class="alm-card">
+        <div class="alm-card-title">📜 Autore del giorno</div>
+        <div class="alm-card-text"><strong>${a.storia_titolo}</strong><br><br>${a.storia_testo}</div>
+      </div>
+      <div class="alm-card">
+        <div class="alm-card-title">🧩 Indovinello Nerd</div>
+        <div class="alm-card-text">${a.indovinello}</div>
+        <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Risposta 👁️‍🗨️</span>
+        <div class="alm-soluzione">${a.soluzione_indovinello}</div>
+      </div>
+    `;
+  } catch (err) {
+    el.innerHTML = '<div class="almanacco-loading">Almanacco non disponibile al momento.</div>';
+  }
+}
+caricaAlmanacco();
+
+function addMessage(role, content) {
+  if (welcome) welcome.style.display = 'none';
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = role === 'user' ? '👤' : '📚';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = formatContent(content);
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  if (window.MathJax) MathJax.typesetPromise([bubble]).catch(console.error);
+  return bubble;
+}
+
+function addTyping() {
+  const msg = document.createElement('div');
+  msg.className = 'msg ai'; msg.id = 'typing';
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar'; avatar.textContent = '📚';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble typing';
+  bubble.innerHTML = '<span></span><span></span><span></span>';
+  msg.appendChild(avatar); msg.appendChild(bubble);
+  chat.appendChild(msg); chat.scrollTop = chat.scrollHeight;
+}
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function formatContent(text) {
+  text = text.replace(/<ALBERO>([\s\S]*?)<\/ALBERO>/g, (_, inner) => {
+    const frase = inner.trim();
+    const safe = frase.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return `<div class="draw-box">
+      <div class="draw-label">🌳 Analisi Sintattica disponibile!</div>
+      <div class="draw-text">"${frase}"</div>
+      <button class="draw-btn" data-frase="${safe}" onclick="apriLabAnalisiDaBottone(this)">Vedi l'albero sintattico →</button>
+    </div>`;
+  });
+  text = text.replace(/<ERRORE>([\s\S]*?)<\/ERRORE>/g, (_, inner) =>
+    `<div class="error-box"><div class="error-label">⚠ Spot l'errore!</div>${inner.trim()}</div>`);
+  text = text.replace(/(Passo \d+:)([^\n<]*)/g, (_, label, content) =>
+    `<div class="step"><div class="step-label">${label}</div>${content.trim()}</div>`);
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || sendBtn.disabled) return;
+  input.value = ''; input.style.height = 'auto';
+  sendBtn.disabled = true;
+
+  addMessage('user', text);
+  history.push({ role: 'user', content: text });
+  if (activeTopic) {
+    history[history.length - 1].content = `[Argomento: ${activeTopic}] ${text}`;
+  }
+  addTyping();
+
+  try {
+    const res = await fetch('/chat-italiano', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    });
+    const data = await res.json();
+    const reply = data.reply || 'Errore nella risposta.';
+    removeTyping();
+    addMessage('ai', reply);
+    history[history.length - 1].content = text;
+    history.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    removeTyping();
+    addMessage('ai', 'Errore di connessione. Riprova.');
+  }
+  sendBtn.disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>

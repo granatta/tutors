@@ -231,9 +231,79 @@
   .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
 
   /* Frame per Draw.Chat */
-  .draw-frame {
+  .draw-wrap {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .draw-toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    background: #170f22;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .draw-toolbar label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  #linkLavagna {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    padding: 9px 12px;
+    outline: none;
+  }
+  #linkLavagna:focus { border-color: var(--purple); box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
+  #linkLavagna::placeholder { color: #8672a3; }
+
+  .draw-toolbar button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    padding: 9px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  #apriLavagnaBtn {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff;
+  }
+  #apriLavagnaBtn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--purple-glow); }
+  #nuovaLavagnaBtn {
+    background: var(--surface);
+    color: var(--ink-soft);
+    border: 1.5px solid var(--border);
+  }
+  #nuovaLavagnaBtn:hover { color: #fff; border-color: var(--purple); }
+
+  .draw-toolbar-msg {
+    flex-basis: 100%;
+    font-size: 12px;
+    color: var(--gold);
+    display: none;
+  }
+  .draw-toolbar-msg.show { display: block; }
+
+  .draw-frame {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
     border: none;
     background: #ffffff;
   }
@@ -245,7 +315,7 @@
   <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
   <div class="logo">🎨</div>
   <div class="header-text">
-    <h1>Vera</h1>
+    <h1>Cinzia</h1>
     <p>🖼️ Educazione Artistica · Scuole Medie</p>
   </div>
 </header>
@@ -293,7 +363,16 @@
 
   <!-- TAB DISEGNO / DRAW.CHAT -->
   <div id="drawTab" class="tab-content">
-    <iframe src="https://draw.chat/" class="draw-frame" title="Draw.Chat Whiteboard"></iframe>
+    <div class="draw-wrap">
+      <div class="draw-toolbar">
+        <label for="linkLavagna">🔗 Lavagna condivisa:</label>
+        <input type="text" id="linkLavagna" placeholder="Incolla qui il link ricevuto (es. https://draw.chat/xxxxx)">
+        <button id="apriLavagnaBtn" onclick="apriLavagnaCondivisa()">Apri lavagna</button>
+        <button id="nuovaLavagnaBtn" onclick="apriNuovaLavagna()">➕ Nuova lavagna</button>
+        <div class="draw-toolbar-msg" id="drawToolbarMsg"></div>
+      </div>
+      <iframe id="drawFrame" src="https://draw.chat/" class="draw-frame" title="Draw.Chat Whiteboard" allow="clipboard-write; clipboard-read"></iframe>
+    </div>
   </div><!-- /drawTab -->
 
 </div><!-- /main-layout -->
@@ -325,6 +404,49 @@ function sendSuggestion(btn) {
   const text = btn.textContent.trim().replace(/^.\s/, '');
   input.value = text;
   sendMessage();
+}
+
+/* ---- Draw.Chat: apertura lavagna condivisa tramite link ---- */
+const linkLavagnaInput = document.getElementById('linkLavagna');
+const drawFrame = document.getElementById('drawFrame');
+const drawToolbarMsg = document.getElementById('drawToolbarMsg');
+
+function mostraMessaggioToolbar(testo) {
+  drawToolbarMsg.textContent = testo;
+  drawToolbarMsg.classList.add('show');
+  setTimeout(() => drawToolbarMsg.classList.remove('show'), 4000);
+}
+
+function apriLavagnaCondivisa() {
+  let url = linkLavagnaInput.value.trim();
+  if (!url) {
+    mostraMessaggioToolbar('⚠️ Incolla prima il link della lavagna.');
+    return;
+  }
+  // Aggiunge automaticamente https:// se l'utente ha incollato solo il dominio
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
+  try {
+    const parsed = new URL(url);
+    const dominioValido = parsed.hostname === 'draw.chat' || parsed.hostname.endsWith('.draw.chat');
+    if (!dominioValido) {
+      mostraMessaggioToolbar('⚠️ Il link non sembra essere di Draw.Chat.');
+      return;
+    }
+    drawFrame.src = parsed.href;
+    linkLavagnaInput.value = '';
+  } catch (err) {
+    mostraMessaggioToolbar('⚠️ Link non valido.');
+  }
+}
+
+linkLavagnaInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); apriLavagnaCondivisa(); }
+});
+
+function apriNuovaLavagna() {
+  drawFrame.src = 'https://draw.chat/';
 }
 
 async function caricaOperaDelGiorno(forza = false, tentativo = 0) {

@@ -171,7 +171,8 @@ def almanacco():
     if os.path.exists(ALMANACCO_FILE):
         with open(ALMANACCO_FILE, "r", encoding="utf-8") as f:
             cache = json.load(f)
-        if cache.get("data") == oggi:
+#        if cache.get("data") == oggi:
+        if oggi == oggi:
             return jsonify(cache["contenuto"])
 
     tema_quesito, tipo_quesito = scegli_tema("quesito", TEMI_QUESITO)

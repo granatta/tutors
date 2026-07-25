@@ -144,7 +144,8 @@ def opera_del_giorno():
     if not forza_rigenerazione and os.path.exists(OPERA_FILE):
         with open(OPERA_FILE, "r", encoding="utf-8") as f:
             cache = json.load(f)
-        if cache.get("data") == oggi:
+#        if cache.get("data") == oggi:
+        if  oggi == oggi:
             return jsonify(cache["contenuto"])
 
     movimento = scegli_movimento()
