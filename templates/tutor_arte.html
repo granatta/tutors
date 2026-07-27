@@ -307,6 +307,275 @@
     border: none;
     background: #ffffff;
   }
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+#kobayashi.tab-content.active-content{
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+}
+
+#kobayashi{
+  --panel:#1b1f24;
+  --line:#2b3036;
+  --text:#e9e7e1;
+  --muted:#8a8f97;
+  --warm:#e2704a;
+  --cool:#4fa3d1;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --serif: 'Fraunces', serif;
+
+  color:var(--text);
+  font-family:var(--sans);
+  padding:32px 28px 44px;
+  max-width:980px;
+  width:100%;
+  margin:0 auto;
+  box-sizing:border-box;
+}
+#kobayashi *{box-sizing:border-box;}
+
+.kob-eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:0 0 6px;
+}
+.kob-title{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:32px;
+  margin:0 0 8px;
+  letter-spacing:-.01em;
+}
+.kob-sub{
+  font-size:13.5px;
+  color:var(--muted);
+  max-width:560px;
+  line-height:1.5;
+  margin:0 0 26px;
+}
+
+.kob-controls{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.kob-input{
+  flex:1 1 240px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--text);
+  font-family:var(--serif);
+  font-size:18px;
+  padding:10px 14px;
+  border-radius:8px;
+  outline:none;
+}
+.kob-input:focus{border-color:var(--warm);}
+.kob-btn{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--muted);
+  padding:11px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:border-color .15s, color .15s;
+}
+.kob-btn:hover{border-color:var(--warm); color:var(--text);}
+
+.kob-chips{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:28px;
+}
+.kob-chip{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.04em;
+  color:var(--muted);
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:5px 10px;
+  border-radius:20px;
+  cursor:pointer;
+}
+.kob-chip:hover{color:var(--text); border-color:var(--cool);}
+
+.kob-main{
+  display:grid;
+  grid-template-columns:1.35fr 1fr;
+  gap:22px;
+  align-items:start;
+}
+@media (max-width:720px){ .kob-main{grid-template-columns:1fr;} }
+
+.kob-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:22px 22px 20px;
+}
+
+.kob-word{
+  font-family:var(--serif);
+  font-size:28px;
+  margin:0 0 2px;
+  text-transform:capitalize;
+}
+.kob-cat{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--cool);
+  margin:0 0 18px;
+}
+
+.kob-swatches{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.kob-swatch{width:104px;}
+.kob-swatch-block{
+  height:74px;
+  border-radius:8px 8px 3px 3px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.kob-swatch-hex{
+  font-family:var(--mono);
+  font-size:11px;
+  margin-top:6px;
+  color:var(--text);
+}
+.kob-swatch-hsl{
+  font-family:var(--mono);
+  font-size:9.5px;
+  color:var(--muted);
+  line-height:1.5;
+}
+.kob-swatch-key{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:8.5px;
+  letter-spacing:.06em;
+  color:var(--warm);
+  margin-top:3px;
+}
+
+.kob-plot-wrap{
+  background:linear-gradient(100deg, rgba(79,163,209,.10), rgba(226,112,74,.10));
+  border-radius:8px;
+  padding:8px;
+}
+.kob-plot-caption{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--mono);
+  font-size:9.5px;
+  color:var(--muted);
+  margin-top:10px;
+  letter-spacing:.04em;
+}
+
+.kob-coords{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--muted);
+  margin-top:16px;
+  border-top:1px dashed var(--line);
+  padding-top:12px;
+}
+.kob-coords b{color:var(--text); font-weight:500;}
+
+.kob-mode-toggle{
+  display:flex;
+  gap:8px;
+  margin-bottom:22px;
+}
+.kob-mode-btn{
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.04em;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--muted);
+  padding:9px 16px;
+  border-radius:9px;
+  cursor:pointer;
+  transition:all .15s;
+}
+.kob-mode-btn:hover{ color:var(--text); border-color:var(--cool); }
+.kob-mode-btn.active{ color:var(--text); border-color:var(--warm); background:var(--surface-accent, #29203e); }
+
+.kob-phrase-legend{
+  display:flex;
+  gap:0;
+  margin-top:14px;
+  border-top:1px dashed var(--line);
+  padding-top:12px;
+}
+.kob-phrase-word{
+  flex:1;
+  min-width:0;
+  text-align:center;
+  padding:0 4px;
+  border-right:1px dashed var(--line);
+}
+.kob-phrase-word:last-child{ border-right:none; }
+.kob-phrase-word .w{
+  font-family:var(--serif);
+  font-size:13px;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.kob-phrase-word .tag{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.05em;
+  margin-top:2px;
+}
+.kob-phrase-word .hex{
+  font-family:var(--mono);
+  font-size:9px;
+  color:var(--muted);
+  margin-top:1px;
+}
+
+.kob-formulas{
+  margin-top:26px;
+  border-top:1px solid var(--line);
+  padding-top:18px;
+  font-family:var(--mono);
+  font-size:11.5px;
+  color:var(--muted);
+  line-height:2.1;
+}
+.kob-formulas .kob-eq-title{
+  color:var(--text);
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.kob-formulas span.v{color:var(--text);}
+.kob-formulas span.warm{color:var(--warm);}
+.kob-formulas span.cool{color:var(--cool);}
+
 </style>
 </head>
 <body>
@@ -322,7 +591,8 @@
 
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="switchTab('chatTab', this)">💬 Chat & Tutor</button>
-  <button class="tab-btn" onclick="switchTab('drawTab', this)">🎨 Disegna (Draw.Chat)</button>
+  <button class="tab-btn" onclick="switchTab('kobayashi', this)">🎨 Palette di Colori</button>
+  <button class="tab-btn" onclick="switchTab('drawTab', this)">🖌️Disegna (Draw.Chat)</button>
 </div>
 
 <div class="main-layout">
@@ -360,6 +630,85 @@
       </div>
     </div><!-- /chat-column -->
   </div><!-- /chatTab -->
+
+<!-- TAB KOBAYASHI -->
+  <div id="kobayashi" class="tab-content">
+
+      <p class="kob-eyebrow">Teoria dei colori &middot; Shigenobu Kobayashi</p>
+      <h1 class="kob-title">Spazio Metrico dei Colori </h1>
+      <p class="kob-sub">
+        Esplora lo spazio psicologico X&thinsp;(Caldo/Freddo), Y&thinsp;(Soft/Hard),
+        Z&thinsp;(Puro/Grigiastro): una singola parola diventa una palette, una frase
+        diventa uno spettrogramma sinestetico che ne segue l'evoluzione nel tempo.
+      </p>
+
+      <div class="kob-mode-toggle">
+        <button id="kobModeWordBtn" class="kob-mode-btn active">🎨 Singola parola</button>
+        <button id="kobModePhraseBtn" class="kob-mode-btn">🎨 Frase — Palette IA</button>
+      </div>
+
+      <!-- ===== MODALITÀ PAROLA ===== -->
+      <div id="kobWordMode">
+        <div class="kob-controls">
+          <input id="kobWordInput" class="kob-input" list="kobWordList" placeholder="es. elegante, selvaggio, romantico…" autocomplete="off">
+          <datalist id="kobWordList"></datalist>
+          <button id="kobRandomBtn" class="kob-btn">Parola a caso</button>
+        </div>
+        <div id="kobChips" class="kob-chips"></div>
+
+        <div class="kob-main">
+          <div class="kob-card">
+            <p id="kobWord" class="kob-word">—</p>
+            <p id="kobCat" class="kob-cat">—</p>
+            <div id="kobSwatches" class="kob-swatches"></div>
+            <div id="kobCoords" class="kob-coords"></div>
+          </div>
+
+          <div class="kob-card">
+            <div class="kob-plot-wrap">
+              <svg id="kobPlot" viewBox="0 0 320 320" width="100%"></svg>
+            </div>
+            <div class="kob-plot-caption">
+              <span style="color:var(--cool)">◂ FREDDO</span>
+              <span>SOFT ▴ / ▾ HARD</span>
+              <span style="color:var(--warm)">CALDO ▸</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kob-formulas">
+          <div class="kob-eq-title">Trasformazione HSL → Ispirata alle coordinate di Kobayashi</div>
+          <div><span class="cool">Y</span> (Soft/Hard) = sign(L−50) · (|L−50| / 50)<span class="v">^0.47</span> &nbsp;—&nbsp; da <span class="v">L</span></div>
+          <div><span class="warm">Z</span> (Chiaro/Grigiastro) = (S − 50) / 50 &nbsp;—&nbsp; da <span class="v">S</span></div>
+          <div><span class="v">X</span> (Caldo/Freddo) = cos( (H − 30°) · π/180 ) &nbsp;—&nbsp; da <span class="v">H</span>, circolare</div>
+        </div>
+      </div><!-- /kobWordMode -->
+
+      <!-- ===== MODALITÀ FRASE — PALETTE DI KOBAYASHI (analisi via IA) ===== -->
+      <div id="kobPhraseMode" style="display:none;">
+        <div class="kob-controls">
+          <input id="kobPhraseInput" class="kob-input" placeholder="es. Un picnic primaverile con torte dolci, fiori freschi e risate di bambini" autocomplete="off">
+          <button id="kobPhraseAnalyzeBtn" class="kob-btn">Analizza →</button>
+          <button id="kobPhraseSampleBtn" class="kob-btn">Frase d'esempio</button>
+        </div>
+
+        <div class="kob-card">
+          <p id="kobPhraseArea" class="kob-word">—</p>
+          <p id="kobPhraseDesc" class="kob-cat">—</p>
+          <div id="kobPhraseSwatches" class="kob-swatches"></div>
+          <div id="kobPhraseCoords" class="kob-coords"></div>
+          <div id="kobPhraseStatus" class="kob-plot-caption" style="justify-content:flex-start;"></div>
+        </div>
+
+        <div class="kob-formulas">
+          <div class="kob-eq-title">Palette di Kobayashi — dalla frase ai 3 colori</div>
+          <div>Un LLM (via OpenRouter) legge l'intera frase e le assegna 3 valori continui in [-1,+1]: <span class="warm">Caldo↔Freddo</span>, <span class="v">Chiaro↔Confuso</span>, <span class="cool">Bouba↔Kiki</span> (morbido↔duro)</div>
+          <div>Quel punto (x,y,z) viene confrontato con i centroidi di <strong>15 aree ispirate alle arre storiche</strong> di Kobayashi (Pretty, Romantic, Dynamic, Elegant, Natural, Modern…) tramite distanza euclidea 3D</div>
+          <div>Si usa la palette a 3 colori (Dominante / Secondario / Accento) precalcolata dell'area più vicina — un'unica palette per l'intera frase, non più una banda per parola</div>
+        </div>
+      </div><!-- /kobPhraseMode -->
+
+  </div><!-- /kobayashi -->
 
   <!-- TAB DISEGNO / DRAW.CHAT -->
   <div id="drawTab" class="tab-content">
@@ -567,6 +916,335 @@ async function sendMessage() {
   sendBtn.disabled = false;
   input.focus();
 }
+
+
+(function(){
+
+/* =====================================================================
+   LOGICA DELL'ALGORITMO — riassunto
+   =====================================================================
+   NOTA: il posizionamento delle parole qui sotto è un'interpretazione
+   originale, NON i dati di ricerca reali della Color Image Scale di
+   Kobayashi (che si basano su test percettivi empirici). Solo la
+   trasformazione matematica HSL -> XYZ segue fedelmente le formule
+   fornite; l'assegnazione parola -> colore è una stima soggettiva.
+
+   1) FAMIGLIE (15 gruppi semantici, es. Dolce, Elegante, Cupo…)
+      Ogni famiglia ha un colore "prototipo" in HSL scelto per
+      coerenza con associazioni cromatiche convenzionali (es. Dinamico
+      = rosso-arancio saturo e luminoso, Cupo = blu-viola scuro e
+      desaturato). Questa è la parte soggettiva/estetica del sistema.
+
+   2) JITTER PER PAROLA (deterministico, non casuale)
+      Ogni parola della famiglia riceve un piccolo scostamento
+      (±18° H, ±12 S, ±10 L) calcolato da un hash della stringa e da
+      una funzione pseudo-random basata su seno (rand01). Serve solo
+      a differenziare le 12 parole di ogni famiglia evitando palette
+      identiche; lo scostamento non riflette un'analisi semantica
+      specifica del termine, è puramente strutturale/riproducibile.
+
+   3) TRASFORMAZIONE HSL -> XYZ (kobXYZ), qui sì fedele alle formule:
+        X = cos((H-30°)·π/180)              asse Caldo/Freddo (circolare)
+        Y = sign(L-50)·(|L-50|/50)^0.47      asse Soft/Hard
+        Z = (S-50)/50                        asse Puro/Grigiastro
+
+   4) COSTRUZIONE PALETTE (buildPalette):
+      a. si calcola il punto-target XYZ della parola scelta;
+      b. si campiona una griglia fitta di colori HSL (passo 6/8/8);
+      c. per ognuno si calcola la distanza euclidea in XYZ dal target
+         (questa è la "metrica di Kobayashi" nello spazio cartesiano);
+      d. si ordinano per distanza crescente e si selezionano i più
+         vicini, scartando quelli troppo simili a colori già scelti
+         (filtro diversità su H/S/L) per ottenere una palette varia.
+
+   5) VISUALIZZAZIONE (drawPlot):
+      scatter plot X/Y con la parola-target come rombo e i colori
+      della palette come pallini; il raggio/opacità dei pallini
+      codifica Z (più puro = pallino più grande e opaco).
+   ===================================================================== */
+
+// ---------- 15 famiglie semantiche × 12 parole = 180 ----------
+const FAMILIES = [
+  {cat:"Dolce",      h:345, s:60, l:82, words:["dolce","carino","tenero","delicato","gentile","soave","zuccherino","mite","coccoloso","affettuoso","morbido","infantile"]},
+  {cat:"Romantico",  h:330, s:38, l:76, words:["romantico","sognante","nostalgico","poetico","sentimentale","etereo","fiabesco","lirico","evanescente","malinconico","vellutato","illusorio"]},
+  {cat:"Naturale",   h:100, s:32, l:52, words:["naturale","organico","terroso","rustico","agreste","boschivo","autentico","genuino","spontaneo","campestre","arcaico","primordiale"]},
+  {cat:"Fresco",     h:150, s:55, l:60, words:["fresco","frizzante","vivace","arioso","leggero","brioso","giovanile","primaverile","effervescente","tonico","salubre","pimpante"]},
+  {cat:"Elegante",   h:265, s:22, l:38, words:["elegante","raffinato","sofisticato","aristocratico","distinto","signorile","sobrio","nobile","composto","austero","contegnoso","aulico"]},
+  {cat:"Classico",   h:222, s:30, l:28, words:["classico","tradizionale","formale","istituzionale","solenne","autorevole","rigoroso","accademico","canonico","ortodosso","marmoreo","protocollare"]},
+  {cat:"Chic",       h:285, s:50, l:32, words:["chic","urbano","metropolitano","minimale","essenziale","contemporaneo","disinvolto","ricercato","tagliente","scenico","glamour","patinato"]},
+  {cat:"Dinamico",   h:15,  s:85, l:48, words:["dinamico","energico","vigoroso","atletico","esplosivo","frenetico","scattante","vulcanico","propulsivo","incalzante","adrenalinico","tempestoso"]},
+  {cat:"Sfarzoso",   h:345, s:75, l:40, words:["sfarzoso","opulento","lussuoso","splendente","magnifico","regale","suntuoso","fastoso","smagliante","trionfale","principesco","abbagliante"]},
+  {cat:"Casual",     h:40,  s:45, l:62, words:["casual","informale","rilassato","spensierato","disimpegnato","quotidiano","familiare","bonario","allamano","amichevole","semplice","confidenziale"]},
+  {cat:"Freddo",     h:205, s:40, l:45, words:["freddo","glaciale","algido","distaccato","siderale","artico","gelido","criptico","metallico","lunare","siderurgico","ombroso"]},
+  {cat:"Cupo",       h:250, s:35, l:18, words:["cupo","tenebroso","oscuro","funereo","lugubre","spettrale","notturno","abissale","crepuscolare","buio","enigmatico","torvo"]},
+  {cat:"Chiaro",     h:190, s:70, l:70, words:["chiaro","puro","cristallino","limpido","trasparente","nitido","terso","luminoso","immacolato","diafano","vitreo","specchiato"]},
+  {cat:"Selvaggio",  h:25,  s:90, l:35, words:["selvaggio","feroce","primitivo","ribelle","indomito","brado","istintivo","tribale","guerresco","barbarico","ancestrale","spietato"]},
+  {cat:"Moderno",    h:200, s:60, l:42, words:["moderno","futuristico","tecnologico","digitale","sintetico","avveniristico","cibernetico","geometrico","industriale","innovativo","algoritmico","robotico"]},
+];
+
+function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))>>>0; } return h; }
+function rand01(seed,salt){ const x=Math.sin(seed*12.9898+salt*78.233)*43758.5453; return x-Math.floor(x); }
+
+const WORDS = {}; // word -> {h,s,l,cat}
+FAMILIES.forEach(f=>{
+  f.words.forEach(w=>{
+    const hash = hashStr(w);
+    const dh=(rand01(hash,1)-0.5)*36;
+    const ds=(rand01(hash,2)-0.5)*24;
+    const dl=(rand01(hash,3)-0.5)*20;
+    WORDS[w] = {
+      h:(f.h+dh+360)%360,
+      s:Math.min(100,Math.max(4,f.s+ds)),
+      l:Math.min(96,Math.max(4,f.l+dl)),
+      cat:f.cat
+    };
+  });
+});
+
+// ---------- Trasformazione di Kobayashi ----------
+function kobXYZ(h,s,l){
+  const X = Math.cos((h-30)*Math.PI/180);
+  const yMag = Math.pow(Math.abs(l-50)/50, 0.47);
+  const Y = (l===50) ? 0 : Math.sign(l-50)*yMag;
+  const Z = (s-50)/50;
+  return {X, Y, Z};
+}
+function dist3(a,b){
+  const dx=a.X-b.X, dy=a.Y-b.Y, dz=a.Z-b.Z;
+  return Math.sqrt(dx*dx+dy*dy+dz*dz);
+}
+
+// ---------- HSL -> HEX ----------
+function hslToHex(h,s,l){
+  s/=100; l/=100;
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+  let r,g,b;
+  if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;}
+  else if(h<180){r=0;g=c;b=x;} else if(h<240){r=0;g=x;b=c;}
+  else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=x;}
+  const toHex=v=>Math.round((v+m)*255).toString(16).padStart(2,"0");
+  return "#"+toHex(r)+toHex(g)+toHex(b);
+}
+
+// ---------- ricerca palette per metrica ----------
+function buildPalette(anchor){
+  const target = kobXYZ(anchor.h, anchor.s, anchor.l);
+  const candidates=[];
+  for(let h=0;h<360;h+=6){
+    for(let s=4;s<=100;s+=8){
+      for(let l=4;l<=96;l+=8){
+        const xyz = kobXYZ(h,s,l);
+        candidates.push({h,s,l,xyz,d:dist3(xyz,target)});
+      }
+    }
+  }
+  candidates.sort((a,b)=>a.d-b.d);
+
+  const picked = [{h:anchor.h,s:anchor.s,l:anchor.l,xyz:target,d:0,key:true}];
+  for(const c of candidates){
+    if(picked.length>=6) break;
+    const farEnough = picked.every(p=>{
+      let dh=Math.abs(p.h-c.h); dh=Math.min(dh,360-dh);
+      return dh>=22 || Math.abs(p.s-c.s)>=16 || Math.abs(p.l-c.l)>=14;
+    });
+    if(farEnough) picked.push(c);
+  }
+  return {target, palette:picked};
+}
+
+// ---------- rendering ----------
+const wordInput = document.getElementById("kobWordInput");
+const wordList  = document.getElementById("kobWordList");
+const chips     = document.getElementById("kobChips");
+const elWord    = document.getElementById("kobWord");
+const elCat     = document.getElementById("kobCat");
+const elSw      = document.getElementById("kobSwatches");
+const elCoords  = document.getElementById("kobCoords");
+const svg       = document.getElementById("kobPlot");
+
+Object.keys(WORDS).sort().forEach(w=>{
+  const opt=document.createElement("option"); opt.value=w; wordList.appendChild(opt);
+});
+FAMILIES.forEach(f=>{
+  const chip=document.createElement("span");
+  chip.className="kob-chip"; chip.textContent=f.cat;
+  chip.onclick=()=>{ wordInput.value=f.words[0]; render(f.words[0]); };
+  chips.appendChild(chip);
+});
+
+function svgX(X){ return 160 + X*135; }
+function svgY(Y){ return 160 - Y*135; }
+
+function drawPlot(target, palette){
+  const dots = palette.map(p=>{
+    const r = 4.5 + (p.xyz.Z+1)/2*7;
+    const op = 0.5 + (p.xyz.Z+1)/2*0.5;
+    const col = hslToHex(p.h,p.s,p.l);
+    return `<circle cx="${svgX(p.xyz.X)}" cy="${svgY(p.xyz.Y)}" r="${r}" fill="${col}" fill-opacity="${op}" stroke="rgba(255,255,255,.35)" stroke-width="1"/>`;
+  }).join("");
+
+  svg.innerHTML = `
+    <line x1="20" y1="160" x2="300" y2="160" stroke="#2b3036" stroke-width="1"/>
+    <line x1="160" y1="20" x2="160" y2="300" stroke="#2b3036" stroke-width="1"/>
+    <circle cx="160" cy="160" r="135" fill="none" stroke="#2b3036" stroke-dasharray="2,4"/>
+    <circle cx="160" cy="160" r="67" fill="none" stroke="#2b3036" stroke-dasharray="2,4"/>
+    ${dots}
+    <path d="M${svgX(target.X)-7} ${svgY(target.Y)} L${svgX(target.X)} ${svgY(target.Y)-7} L${svgX(target.X)+7} ${svgY(target.Y)} L${svgX(target.X)} ${svgY(target.Y)+7} Z"
+          fill="none" stroke="#e9e7e1" stroke-width="1.4"/>
+  `;
+}
+
+function render(word){
+  word = (word||"").trim().toLowerCase();
+  const anchor = WORDS[word];
+  if(!anchor) return;
+
+  elWord.textContent = word;
+  elCat.textContent  = anchor.cat;
+
+  const {target, palette} = buildPalette(anchor);
+
+  elSw.innerHTML = palette.map(p=>{
+    const hex = hslToHex(p.h,p.s,p.l);
+    return `<div class="kob-swatch">
+      <div class="kob-swatch-block" style="background:${hex}"></div>
+      <div class="kob-swatch-hex">${hex}</div>
+      <div class="kob-swatch-hsl">H${p.h.toFixed(0)} S${p.s.toFixed(0)} L${p.l.toFixed(0)}<br>d=${p.d.toFixed(2)}</div>
+      ${p.key?'<span class="kob-swatch-key">colore-guida</span>':''}
+    </div>`;
+  }).join("");
+
+  elCoords.innerHTML = `Coordinate del concetto &nbsp; X=<b>${target.X.toFixed(2)}</b> &nbsp; Y=<b>${target.Y.toFixed(2)}</b> &nbsp; Z=<b>${target.Z.toFixed(2)}</b>`;
+
+  drawPlot(target, palette);
+}
+
+wordInput.addEventListener("input", ()=>{
+  const w = wordInput.value.trim().toLowerCase();
+  if(WORDS[w]) render(w);
+});
+document.getElementById("kobRandomBtn").addEventListener("click", ()=>{
+  const keys = Object.keys(WORDS);
+  const w = keys[Math.floor(Math.random()*keys.length)];
+  wordInput.value = w;
+  render(w);
+});
+
+render("elegante");
+
+/* =====================================================================
+   MODALITÀ FRASE — Palette di Kobayashi (analisi semantica via OpenRouter)
+   =====================================================================
+   1) L'intera frase viene inviata al backend (/kobayashi-palette), che
+      chiama un LLM via OpenRouter per posizionarla su 3 assi continui
+      [-1,+1]: Caldo/Freddo, Chiaro/Confuso, Bouba/Kiki (morbido/duro).
+   2) Il backend trova il centroide più vicino (distanza euclidea 3D) tra
+      15 aree storiche di Kobayashi e restituisce la sua palette a 3
+      colori precalcolata (Dominante, Secondario, Accento).
+   3) Qui ci limitiamo a mostrare il risultato: non c'è più calcolo
+      colore lato client, la "matematica" vive nel backend.
+   ===================================================================== */
+
+const phraseInput = document.getElementById("kobPhraseInput");
+const phraseArea = document.getElementById("kobPhraseArea");
+const phraseDesc = document.getElementById("kobPhraseDesc");
+const phraseSwatches = document.getElementById("kobPhraseSwatches");
+const phraseCoords = document.getElementById("kobPhraseCoords");
+const phraseStatus = document.getElementById("kobPhraseStatus");
+
+const RUOLI_PALETTE = ["Dominante", "Secondario", "Accento"];
+
+function hslStringToHex(hslStr){
+  const m = hslStr.match(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/i);
+  if(!m) return hslStr;
+  return hslToHex(parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3]));
+}
+
+async function analizzaFrase(text){
+  text = text.trim();
+  if(!text) return;
+
+  phraseStatus.textContent = "Sto interrogando l'IA…";
+  phraseStatus.style.color = "var(--muted)";
+
+  try{
+    const res = await fetch("/kobayashi-palette", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({text})
+    });
+    const data = await res.json();
+
+    if(!res.ok || data.errore){
+      phraseStatus.textContent = "⚠ " + (data.errore || "Errore durante l'analisi");
+      phraseStatus.style.color = "var(--warm)";
+      return;
+    }
+
+    phraseArea.textContent = data.area;
+    phraseDesc.textContent = data.descrizione;
+
+    phraseSwatches.innerHTML = data.palette.map((hslStr, i)=>{
+      const hex = hslStringToHex(hslStr);
+      return `<div class="kob-swatch">
+        <div class="kob-swatch-block" style="background:${hslStr}"></div>
+        <div class="kob-swatch-hex">${hex}</div>
+        <div class="kob-swatch-hsl">${RUOLI_PALETTE[i]}</div>
+      </div>`;
+    }).join("");
+
+    phraseCoords.innerHTML =
+      `Assi estratti &nbsp; Caldo/Freddo=<b>${data.assi.caldo_freddo.toFixed(2)}</b> &nbsp; `+
+      `Chiaro/Confuso=<b>${data.assi.chiaro_confuso.toFixed(2)}</b> &nbsp; `+
+      `Bouba/Kiki=<b>${data.assi.morbido_duro.toFixed(2)}</b><br>`+
+      `Centroide più vicino: <b>${data.area}</b> (distanza ${data.distanza})`;
+
+    phraseStatus.textContent = "";
+  }catch(err){
+    phraseStatus.textContent = "⚠ Errore di rete durante l'analisi";
+    phraseStatus.style.color = "var(--warm)";
+  }
+}
+
+const SAMPLE_PHRASES = [
+  "Un picnic primaverile con torte dolci, fiori freschi e risate di bambini",
+  "Un vicolo silenzioso di notte, pioggia fredda e lampioni lontani",
+  "Una sala da ballo dorata, velluto rosso e specchi scintillanti",
+  "Un ufficio minimale, superfici lucide e luce al neon",
+  "Un bosco all'alba, muschio umido e nebbia leggera",
+];
+
+document.getElementById("kobPhraseAnalyzeBtn").addEventListener("click", ()=>{
+  analizzaFrase(phraseInput.value);
+});
+phraseInput.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") analizzaFrase(phraseInput.value);
+});
+document.getElementById("kobPhraseSampleBtn").addEventListener("click", ()=>{
+  const p = SAMPLE_PHRASES[Math.floor(Math.random()*SAMPLE_PHRASES.length)];
+  phraseInput.value = p;
+  analizzaFrase(p);
+});
+
+// ---------- toggle Parola / Frase ----------
+const modeWordBtn = document.getElementById("kobModeWordBtn");
+const modePhraseBtn = document.getElementById("kobModePhraseBtn");
+const kobWordMode = document.getElementById("kobWordMode");
+const kobPhraseMode = document.getElementById("kobPhraseMode");
+
+modeWordBtn.addEventListener("click", ()=>{
+  modeWordBtn.classList.add("active"); modePhraseBtn.classList.remove("active");
+  kobWordMode.style.display=""; kobPhraseMode.style.display="none";
+});
+modePhraseBtn.addEventListener("click", ()=>{
+  modePhraseBtn.classList.add("active"); modeWordBtn.classList.remove("active");
+  kobPhraseMode.style.display=""; kobWordMode.style.display="none";
+  if(!phraseInput.value){ phraseInput.value = SAMPLE_PHRASES[0]; analizzaFrase(phraseInput.value); }
+});
+})();
+
 </script>
 </body>
 </html>

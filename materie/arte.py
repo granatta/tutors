@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template
 import os
 import json
+import math
 import random
 import requests
 from datetime import date
@@ -128,6 +129,162 @@ def scegli_movimento():
 
 
 # ---------------------------------------------------------------------------
+# Helper: Palette di Kobayashi via analisi semantica (OpenRouter)
+# ---------------------------------------------------------------------------
+# Logica: si manda l'intera frase a un LLM (via OpenRouter) che la posiziona
+# su 3 assi continui -1.0..+1.0 (Caldo/Freddo, Chiaro/Confuso, Bouba/Kiki),
+# poi si trova il centroide più vicino (distanza euclidea 3D) tra 15 "aree"
+# storiche della teoria di Kobayashi, e si usa la sua palette a 3 colori
+# precalcolata. Sostituisce l'analisi parola-per-parola / lo spettrogramma:
+# qui l'output è UNA palette per l'intera frase, non una banda per parola.
+
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+PROMPT_SISTEMA_KOBAYASHI = (
+    "Sei un esperto della teoria dei colori di Kobayashi, della fonosemantica e della psicolinguistica. "
+    "Analizza la frase fornita dall'utente e assegna un valore continuo da -1.0 a +1.0 per ciascuno dei seguenti 3 assi:\n"
+    "1. caldo_freddo: da -1.0 (Freddo) a +1.0 (Caldo).\n"
+    "2. chiaro_confuso: da -1.0 (Confuso) a +1.0 (Chiaro).\n"
+    "3. morbido_duro: Effetto Bouba/Kiki (-1.0 indica un puro effetto Kiki/Duro, +1.0 indica un puro effetto Bouba/Morbido).\n\n"
+    "Rispondi ESCLUSIVAMENTE con un oggetto JSON valido, senza blocchi markdown o testo descrittivo aggiuntivo. "
+    "La struttura deve essere esattamente questa: "
+    '{"caldo_freddo": valore, "chiaro_confuso": valore, "morbido_duro": valore}'
+)
+
+# 15 centroidi storici di Kobayashi: coordinate (x=caldo/freddo,
+# y=chiaro/confuso, z=morbido/duro) + palette a 3 colori (dominante,
+# secondario, accento) associata a ciascuna "area".
+DATABASE_KOBAYASHI = {
+    "PRETTY": {
+        "x": 0.7, "y": 0.6, "z": 0.8,
+        "desc": "Giovanile, dolce e confetto",
+        "palette": ["hsl(340, 80%, 75%)", "hsl(45, 90%, 70%)", "hsl(160, 40%, 80%)"]
+    },
+    "ROMANTIC": {
+        "x": 0.4, "y": 0.2, "z": 0.7,
+        "desc": "Delicato, pastello e sognante",
+        "palette": ["hsl(350, 50%, 82%)", "hsl(25, 60%, 85%)", "hsl(200, 30%, 80%)"]
+    },
+    "CASUAL": {
+        "x": 0.5, "y": 0.8, "z": 0.2,
+        "desc": "Informale, fresco e amichevole",
+        "palette": ["hsl(25, 90%, 55%)", "hsl(190, 75%, 50%)", "hsl(50, 85%, 65%)"]
+    },
+    "LIVELY": {
+        "x": 0.8, "y": 0.7, "z": 0.1,
+        "desc": "Vivace, energetico e solare",
+        "palette": ["hsl(10, 95%, 50%)", "hsl(35, 95%, 55%)", "hsl(90, 65%, 45%)"]
+    },
+    "DYNAMIC": {
+        "x": 0.9, "y": 0.5, "z": -0.2,
+        "desc": "Potente, impulsivo e stimolante",
+        "palette": ["hsl(0, 100%, 40%)", "hsl(220, 85%, 35%)", "hsl(0, 0%, 15%)"]
+    },
+    "ELEGANT": {
+        "x": 0.1, "y": 0.3, "z": 0.4,
+        "desc": "Raffinato, sofisticato e vellutato",
+        "palette": ["hsl(280, 25%, 50%)", "hsl(300, 15%, 70%)", "hsl(210, 15%, 40%)"]
+    },
+    "GORGEOUS": {
+        "x": 0.6, "y": 0.4, "z": 0.3,
+        "desc": "Lussuoso, sfarzoso e profondo",
+        "palette": ["hsl(320, 70%, 45%)", "hsl(40, 65%, 45%)", "hsl(260, 45%, 30%)"]
+    },
+    "CLASSIC": {
+        "x": 0.2, "y": -0.4, "z": -0.3,
+        "desc": "Tradizionale, storico e formale",
+        "palette": ["hsl(25, 45%, 25%)", "hsl(120, 25%, 25%)", "hsl(35, 40%, 45%)"]
+    },
+    "CHIC": {
+        "x": -0.1, "y": -0.5, "z": 0.1,
+        "desc": "Sobrio, discreto ed elegante nella penombra",
+        "palette": ["hsl(40, 20%, 55%)", "hsl(80, 15%, 45%)", "hsl(0, 0%, 50%)"]
+    },
+    "NATURAL": {
+        "x": 0.3, "y": 0.3, "z": 0.5,
+        "desc": "Ecologico, rilassante e organico",
+        "palette": ["hsl(35, 40%, 70%)", "hsl(100, 30%, 60%)", "hsl(30, 50%, 85%)"]
+    },
+    "MODERN": {
+        "x": -0.6, "y": 0.5, "z": -0.5,
+        "desc": "Tecnologico, urbano e minimale",
+        "palette": ["hsl(0, 0%, 95%)", "hsl(0, 0%, 10%)", "hsl(195, 90%, 45%)"]
+    },
+    "COOL": {
+        "x": -0.8, "y": 0.4, "z": -0.3,
+        "desc": "Ghiacciato, distaccato e metallico",
+        "palette": ["hsl(210, 50%, 80%)", "hsl(230, 55%, 40%)", "hsl(190, 30%, 65%)"]
+    },
+    "DANDY": {
+        "x": -0.5, "y": -0.6, "z": -0.7,
+        "desc": "Maschile, solido e austero",
+        "palette": ["hsl(210, 30%, 20%)", "hsl(0, 0%, 30%)", "hsl(25, 20%, 35%)"]
+    },
+    "CLEAR": {
+        "x": -0.2, "y": 0.9, "z": 0.3,
+        "desc": "Trasparente, cristallino e acquatico",
+        "palette": ["hsl(190, 85%, 75%)", "hsl(210, 80%, 85%)", "hsl(170, 70%, 80%)"]
+    },
+    "QUIET": {
+        "x": -0.3, "y": -0.2, "z": 0.4,
+        "desc": "Silenzioso, calmo e riflessivo",
+        "palette": ["hsl(200, 20%, 70%)", "hsl(140, 15%, 72%)", "hsl(220, 15%, 65%)"]
+    }
+}
+
+
+def analizza_frase_openrouter(frase):
+    """Chiede a un LLM via OpenRouter di posizionare la frase sui 3 assi di Kobayashi.
+    Restituisce un dict {'caldo_freddo':.., 'chiaro_confuso':.., 'morbido_duro':..}
+    oppure None in caso di errore (chiave mancante, rete, risposta malformata)."""
+    if not OPENROUTER_API_KEY:
+        return None
+
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://pythonanywhere.com",
+        "X-Title": "Kobayashi Color Analysis",
+    }
+    payload = {
+        "model": "openrouter/free",
+        "messages": [
+            {"role": "system", "content": PROMPT_SISTEMA_KOBAYASHI},
+            {"role": "user", "content": f"Analizza questa frase: '{frase}'"},
+        ],
+        "temperature": 0.1,
+        "response_format": {"type": "json_object"},
+    }
+
+    try:
+        resp = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=20)
+        resp.raise_for_status()
+        data = resp.json()
+        testo = data["choices"][0]["message"]["content"]
+        testo = testo.replace("```json", "").replace("```", "").strip()
+        assi = json.loads(testo)
+        for chiave in ("caldo_freddo", "chiaro_confuso", "morbido_duro"):
+            if chiave not in assi:
+                return None
+            assi[chiave] = max(-1.0, min(1.0, float(assi[chiave])))
+        return assi
+    except (requests.RequestException, KeyError, IndexError, ValueError, json.JSONDecodeError):
+        return None
+
+
+def trova_area_kobayashi(assi):
+    """Trova il centroide più vicino (distanza euclidea 3D esatta) tra le 15 aree di Kobayashi."""
+    x1, y1, z1 = assi["caldo_freddo"], assi["chiaro_confuso"], assi["morbido_duro"]
+    area_piu_vicina, distanza_minima = None, float("inf")
+    for nome_area, dati in DATABASE_KOBAYASHI.items():
+        distanza = math.sqrt((dati["x"] - x1) ** 2 + (dati["y"] - y1) ** 2 + (dati["z"] - z1) ** 2)
+        if distanza < distanza_minima:
+            distanza_minima, area_piu_vicina = distanza, nome_area
+    return area_piu_vicina, distanza_minima
+
+
+# ---------------------------------------------------------------------------
 # ROUTE
 # ---------------------------------------------------------------------------
 
@@ -183,6 +340,34 @@ def opera_del_giorno():
         json.dump({"data": oggi, "contenuto": contenuto}, f, ensure_ascii=False)
 
     return jsonify(contenuto)
+
+
+@arte_bp.route("/kobayashi-palette", methods=["POST"])
+def kobayashi_palette():
+    data = request.get_json(force=True, silent=True) or {}
+    frase = (data.get("text") or "").strip()
+    if not frase:
+        return jsonify({"errore": "Frase vuota"}), 400
+
+    assi = analizza_frase_openrouter(frase)
+    if assi is None:
+        return jsonify({
+            "errore": "Analisi non riuscita: chiave OPENROUTER_API_KEY mancante, "
+                      "servizio non raggiungibile, o risposta del modello non valida."
+        }), 502
+
+    area_chiave, distanza = trova_area_kobayashi(assi)
+    dati_area = DATABASE_KOBAYASHI[area_chiave]
+
+    return jsonify({
+        "frase": frase,
+        "assi": assi,
+        "area": area_chiave,
+        "descrizione": dati_area["desc"],
+        "centroide": {"x": dati_area["x"], "y": dati_area["y"], "z": dati_area["z"]},
+        "distanza": round(distanza, 3),
+        "palette": dati_area["palette"],
+    })
 
 
 @arte_bp.route("/chat-arte", methods=["POST"])
