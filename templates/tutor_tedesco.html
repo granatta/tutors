@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klara — Il tuo Tutor di Tedesco</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+  :root {
+    --bg: #120b19;
+    --surface: #1f1630;
+    --surface-accent: #29203e;
+    --border: #402e5b;
+    --ink: #f8fafc;
+    --ink-soft: #b3a4c9;
+
+    --purple: #a855f7;
+    --purple-glow: rgba(168, 85, 247, 0.25);
+    --pink: #ec4899;
+    --gold: #f59e0b;
+
+    --radius: 16px;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-neon: 0 0 15px rgba(168, 85, 247, 0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #1a1025, var(--surface));
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .logo {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+    animation: pulse 3s infinite alternate;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); }
+    100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(236, 72, 153, 0.6); }
+  }
+  .header-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 700;
+    background: linear-gradient(to right, #ffffff, var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-text p { font-size: 13px; color: var(--ink-soft); margin-top: 2px; font-weight: 500; }
+
+  /* Barra dei Tab */
+  .tabs-bar {
+    display: flex;
+    background: #170f22;
+    border-bottom: 2px solid var(--border);
+    padding: 0 24px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-btn:hover {
+    color: #fff;
+  }
+
+  .tab-btn.active {
+    color: var(--purple);
+    border-bottom-color: var(--purple);
+  }
+
+  .main-layout { flex: 1; display: flex; overflow: hidden; min-height: 0; background: #0e0813; }
+
+  .tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .tab-content.active-content {
+    display: flex;
+  }
+
+  .chat-column { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; }
+
+  .sidebar {
+    width: 340px; flex-shrink: 0;
+    background: #170f22;
+    border-right: 2px solid var(--border);
+    display: flex; flex-direction: column;
+    height: 100%; overflow-y: auto;
+  }
+  @media (max-width: 850px) { .sidebar { display: none; } }
+
+  .sidebar-header {
+    padding: 16px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--purple);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .sidebar-content-inner { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  .opera-loading { font-size: 13px; color: var(--ink-soft); text-align: center; padding: 20px 0; }
+
+  .opera-img {
+    width: 100%; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: block;
+  }
+
+  .opera-titolo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-top: 4px; }
+  .opera-artista { font-size: 13px; color: var(--purple); font-weight: 600; }
+  .opera-data { font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; }
+
+  .art-card {
+    background: var(--surface);
+    padding: 16px; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .art-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; margin-bottom: 8px; color: var(--pink);
+  }
+  .art-card-text { font-size: 13.5px; line-height: 1.6; color: #e5d9f5; }
+
+  .chat { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; height: 100%; }
+
+  .welcome {
+    text-align: center; padding: 40px 20px;
+    background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+    border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05);
+    max-width: 600px; margin: 20px auto; flex-shrink: 0;
+  }
+  .welcome .big-icon { font-size: 54px; margin-bottom: 16px; animation: float 4s ease-in-out infinite; display: inline-block; }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  .welcome h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+  .welcome p { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 480px; margin: 0 auto; }
+  .suggestions { display: flex; flex-direction: column; gap: 10px; margin-top: 26px; }
+  .suggestion {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-align: left; color: #e5d9f5; transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .suggestion:hover { border-color: var(--purple); background: var(--surface-accent); transform: scale(1.01) translateX(4px); color: #fff; }
+
+  .msg { display: flex; gap: 14px; max-width: 85%; }
+  .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .msg.user .avatar { background: #3b2a52; border: 1.5px solid #5b4380; }
+  .msg.ai .avatar { background: linear-gradient(135deg, var(--purple), var(--pink)); border: 1.5px solid #d946ef; }
+
+  .bubble {
+    padding: 14px 18px; border-radius: 20px; font-size: 15px; line-height: 1.65;
+    border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); width: 100%;
+  }
+  .msg.user .bubble { background: linear-gradient(135deg, #2e1a45, #451065); border-color: #6d28d9; border-radius: 20px 4px 20px 20px; color: #f3e8ff; }
+  .msg.ai .bubble { background: var(--surface); border-radius: 4px 20px 20px 20px; }
+  .bubble strong { color: var(--pink); font-weight: 700; }
+
+  .bubble-img {
+    width: 100%; max-width: 420px; border-radius: 12px;
+    margin-bottom: 12px; display: block; border: 1px solid var(--border);
+  }
+
+  .typing { display: flex; gap: 6px; padding: 12px 16px; align-items: center; }
+  .typing span { width: 8px; height: 8px; background: var(--purple); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; background: var(--pink); }
+  .typing span:nth-child(3) { animation-delay: 0.4s; background: var(--purple); }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+
+  .input-area { padding: 16px 24px; background: #170f22; border-top: 2px solid var(--border); flex-shrink: 0; }
+  .input-row { display: flex; gap: 12px; align-items: flex-end; max-width: 1000px; margin: 0 auto; width: 100%; }
+  textarea {
+    flex: 1; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
+    color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; padding: 12px 16px;
+    resize: none; outline: none; min-height: 48px; max-height: 120px; overflow-y: auto; line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--purple); box-shadow: 0 0 12px rgba(168, 85, 247, 0.2); background: var(--surface-accent); }
+  textarea::placeholder { color: #8672a3; }
+
+  .send-btn {
+    width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--purple), var(--pink));
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0; color: #fff; transition: all 0.2s;
+  }
+  .send-btn:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4); }
+  .send-btn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
+  .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
+
+  /* Frame per Draw.Chat */
+  .draw-wrap {
+    width: 100%;
+  /* Frame per Draw.Chat */
+  .draw-wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .draw-toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    background: #170f22;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .draw-toolbar label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  #linkLavagna {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    padding: 9px 12px;
+    outline: none;
+  }
+  #linkLavagna:focus { border-color: var(--purple); box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
+  #linkLavagna::placeholder { color: #8672a3; }
+
+  .draw-toolbar button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    padding: 9px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  #apriLavagnaBtn {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff;
+  }
+  #apriLavagnaBtn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--purple-glow); }
+  #nuovaLavagnaBtn {
+    background: var(--surface);
+    color: var(--ink-soft);
+    border: 1.5px solid var(--border);
+  }
+  #nuovaLavagnaBtn:hover { color: #fff; border-color: var(--purple); }
+
+  .draw-toolbar-msg {
+    flex-basis: 100%;
+    font-size: 12px;
+    color: var(--gold);
+    display: none;
+  }
+  .draw-toolbar-msg.show { display: block; }
+
+  .draw-frame {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    border: none;
+    background: #ffffff;
+  }
+
+  /* Frame per lo strumento didattico (LyricsTraining / LingoClip) */
+  /* Card di lancio per lo strumento didattico esterno (LyricsTraining / LingoClip) */
+  .tool-launch {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px; padding: 40px 24px; text-align: center; overflow-y: auto;
+  }
+  .tool-launch-icon {
+    width: 84px; height: 84px; border-radius: 22px;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; box-shadow: var(--shadow-neon);
+  }
+  .tool-launch h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; }
+  .tool-launch p { font-size: 14.5px; color: var(--ink-soft); max-width: 460px; line-height: 1.6; }
+  .tool-launch-btn {
+    margin-top: 6px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700;
+    background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff;
+    border: none; border-radius: 14px; padding: 14px 28px; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.2s; box-shadow: var(--shadow-sm);
+  }
+  .tool-launch-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--purple-glow); }
+  .tool-launch-note {
+    font-size: 12px; color: #8672a3; max-width: 460px; margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
+  <div class="logo">🇩🇪</div>
+  <div class="header-text">
+    <h1>Klara</h1>
+    <p>🗣️ Lingua Tedesca · Scuole Medie</p>
+  </div>
+</header>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('chatTab', this)">💬 Chat & Tutor</button>
+  <button class="tab-btn" onclick="switchTab('toolTab', this)">🎧 LyricsTraining</button>
+</div>
+
+<div class="main-layout">
+
+  <!-- TAB CHAT -->
+  <div id="chatTab" class="tab-content active-content">
+    <aside class="sidebar">
+      <div class="sidebar-header">📖 Parola del giorno</div>
+      <div class="sidebar-content-inner" id="parolaContent">
+        <div class="opera-loading">🇩🇪 Sto scegliendo la parola di oggi...</div>
+      </div>
+    </aside>
+
+    <div class="chat-column">
+      <div class="chat" id="chat">
+        <div class="welcome" id="welcome">
+          <div class="big-icon">🇩🇪</div>
+          <h2>Bereit, dein Deutsch zu üben??</h2>
+          <p>Sono Klara, la tua tutor di tedesco. Chiedimi il significato di una parola, aiuto con la grammatica o facciamo un piccolo dialogo insieme!</p>
+          <div class="suggestions">
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>❓</span>Cosa vuol dire "obwohl"?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>📝</span>Spiegami il Präsens</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>💬</span>Facciamo un dialogo al ristorante</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🔤</span>Come si pronuncia "Vogel"?</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <textarea id="input" placeholder="Chiedi qualcosa a Klara... (es. cosa vuol dire 'Wetter'?)" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">🇩🇪</button>
+        </div>
+        <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
+      </div>
+    </div><!-- /chat-column -->
+  </div><!-- /chatTab -->
+
+  <!-- TAB STRUMENTO: LYRICSTRAINING / LINGOCLIP -->
+  <div id="toolTab" class="tab-content">
+    <div class="tool-launch">
+      <div class="tool-launch-icon">🎧</div>
+      <h2>LyricsTraining</h2>
+      <p>Impara il tedesco completando i testi delle canzoni mentre guardi i video musicali: un ottimo modo per esercitare listening e vocabolario in modo divertente.</p>
+      <a class="tool-launch-btn" href="https://lyricstraining.com/de" target="_blank" rel="noopener">
+          <img src="/static/lyrics.jpg" alt="Esercizio LearningApps" style="width: 30%;">
+      </a>
+
+    </div>
+  </div><!-- /toolTab -->
+
+</div><!-- /main-layout -->
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const welcome = document.getElementById('welcome');
+let history = [];
+
+function switchTab(tabId, element) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
+
+  element.classList.add('active');
+  document.getElementById(tabId).classList.add('active-content');
+}
+
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+});
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+function sendSuggestion(btn) {
+  const text = btn.textContent.trim().replace(/^.\s/, '');
+  input.value = text;
+  sendMessage();
+}
+
+async function caricaParolaDelGiorno(forza = false) {
+  const el = document.getElementById('parolaContent');
+  try {
+    const res = await fetch(forza ? '/parola-del-giorno-tedesco?forza=1' : '/parola-del-giorno-tedesco');
+    const p = await res.json();
+    if (p.errore) throw new Error(p.errore);
+
+    el.innerHTML = `
+      <div class="opera-titolo">${p.parola}</div>
+      <div class="opera-artista">${p.pronuncia || ''}</div>
+      <div class="opera-data">${p.traduzione || ''}</div>
+
+      <div class="art-card">
+        <div class="art-card-title">✨ Significato</div>
+        <div class="art-card-text">${p.definizione_semplice}</div>
+      </div>
+      <div class="art-card">
+        <div class="art-card-title">💬 Esempio</div>
+        <div class="art-card-text"><em>${p.frase_esempio_de}</em><br>${p.frase_esempio_it}</div>
+      </div>
+      <div class="art-card">
+        <div class="art-card-title">🎯 Curiosità</div>
+        <div class="art-card-text">${p.curiosita}</div>
+      </div>
+    `;
+  } catch (err) {
+    el.innerHTML = '<div class="opera-loading">Parola del giorno non disponibile al momento.</div>';
+  }
+}
+caricaParolaDelGiorno();
+
+function addMessage(role, content) {
+  if (welcome) welcome.style.display = 'none';
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = role === 'user' ? '👤' : '🇩🇪';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = formatContent(content);
+
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return bubble;
+}
+
+function addTyping() {
+  const msg = document.createElement('div');
+  msg.className = 'msg ai'; msg.id = 'typing';
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar'; avatar.textContent = '🇩🇪';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble typing';
+  bubble.innerHTML = '<span></span><span></span><span></span>';
+  msg.appendChild(avatar); msg.appendChild(bubble);
+  chat.appendChild(msg); chat.scrollTop = chat.scrollHeight;
+}
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function formatContent(text) {
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || sendBtn.disabled) return;
+  input.value = ''; input.style.height = 'auto';
+  sendBtn.disabled = true;
+
+  addMessage('user', text);
+  history.push({ role: 'user', content: text });
+  addTyping();
+
+  try {
+    const res = await fetch('/chat-tedesco', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    });
+    const data = await res.json();
+    removeTyping();
+    addMessage('ai', data.reply);
+    history.push({ role: 'assistant', content: data.reply });
+  } catch (err) {
+    removeTyping();
+    addMessage('ai', 'Ops, qualcosa è andato storto. Riprova!');
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+}
+</script>
+</body>
+</html>

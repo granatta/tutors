@@ -18,6 +18,8 @@
     --purple: #a855f7;
     --blue: #2563eb;
     --neon-orange: #ff7a00;
+    --rose: #ec4899;
+    --gold: #d4a017;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,6 +84,8 @@
   .tutor-card.arte .tutor-icon { background: linear-gradient(135deg, var(--purple), #7e22ce); }
   .tutor-card.italiano .tutor-icon { background: linear-gradient(135deg, var(--blue), #0ea5e9); }
   .tutor-card.storia .tutor-icon { background: linear-gradient(135deg, var(--neon-orange), #c2410c); }
+  .tutor-card.inglese .tutor-icon { background: linear-gradient(135deg, var(--rose), #be185d); }
+  .tutor-card.tedesco .tutor-icon { background: linear-gradient(135deg, var(--gold), #92400e); }
 
 
 
@@ -99,6 +103,8 @@
   .tutor-card.arte .go { color: var(--purple); }
   .tutor-card.italiano .go { color: var(--blue); }
   .tutor-card.storia .go { color: var(--neon-orange); }
+  .tutor-card.inglese .go { color: var(--rose); }
+  .tutor-card.tedesco .go { color: var(--gold); }
 
 </style>
 </head>
@@ -135,6 +141,20 @@
     <div class="tutor-icon">🏛️</div>
     <h2>Lucio — Storia</h2>
     <p>Viaggia nel tempo fino all'Antica Roma e oltre: esplora battaglie, alleanze e la vita quotidiana della gente, con il fatto storico del giorno.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+  <a href="/inglese" class="tutor-card inglese">
+    <div class="tutor-icon">🇬🇧</div>
+    <h2>Emma — Inglese</h2>
+    <p>Allenati con grammatica, vocabolario e piccoli dialoghi in inglese, con la parola del giorno e un tool di ascolto con le canzoni.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+  <a href="/tedesco" class="tutor-card tedesco">
+    <div class="tutor-icon">🇩🇪</div>
+    <h2>Klara — Tedesco</h2>
+    <p>Scopri la lingua tedesca passo dopo passo: grammatica, vocabolario e pratica con la parola del giorno e le canzoni in tedesco.</p>
     <div class="go">Entra nella chat →</div>
   </a>
 

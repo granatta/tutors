@@ -5,6 +5,8 @@ import os
 from materie.matematica import matematica_bp
 from materie.arte import arte_bp
 from materie.grammatica import grammatica_bp
+from materie.inglese import inglese_bp
+from materie.tedesco import tedesco_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +14,8 @@ CORS(app)
 app.register_blueprint(matematica_bp)
 app.register_blueprint(arte_bp)
 app.register_blueprint(grammatica_bp)
+app.register_blueprint(inglese_bp)
+app.register_blueprint(tedesco_bp)
 
 
 @app.route("/")
