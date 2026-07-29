@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucio — Il tuo Super Tutor di Storia</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #140d0a;
+    --surface: #261814;
+    --surface-accent: #38241e;
+    --border: #4d332a;
+    --ink: #faf8f7;
+    --ink-soft: #c4b0a9;
+
+    /* Palette Storia: terracotta/mattone + ambra/bronzo */
+    --terracotta: #d97706;
+    --terracotta-glow: rgba(217, 119, 6, 0.25);
+    --amber: #f59e0b;
+    --bronze: #b45309;
+    --crimson: #dc2626;
+
+    --radius: 16px;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-neon: 0 0 15px rgba(217, 119, 6, 0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ---- Header ---- */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #1f120e, var(--surface));
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 10;
+  }
+  .logo {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--terracotta), var(--amber));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+    animation: pulse 3s infinite alternate;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(217, 119, 6, 0.4); }
+    100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+  }
+  .header-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(to right, #ffffff, var(--amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-text p {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  /* ---- Topic chips ---- */
+  .topics {
+    display: flex; gap: 10px;
+    padding: 12px 24px;
+    overflow-x: auto; flex-shrink: 0;
+    background: #1a100c;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .topics::-webkit-scrollbar { display: none; }
+  .topic-chip {
+    flex-shrink: 0; padding: 8px 16px;
+    border-radius: 20px; font-size: 13px; font-weight: 700;
+    cursor: pointer; border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--ink-soft);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .topic-chip:hover {
+    border-color: var(--amber); color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--terracotta-glow);
+  }
+  .topic-chip.active {
+    background: linear-gradient(135deg, var(--terracotta), var(--bronze));
+    border-color: var(--amber);
+    color: #fff;
+    box-shadow: var(--shadow-neon);
+  }
+
+  /* ---- Barra dei Tab ---- */
+  .tabs-bar {
+    display: flex;
+    background: #120907;
+    border-bottom: 2px solid var(--border);
+    padding: 0 24px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-btn:hover { color: #fff; }
+
+  .tab-btn.active {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+
+  /* ---- Layout Principale ---- */
+  .main-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+    background: #0f0806;
+  }
+
+  .tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .tab-content.active-content {
+    display: flex;
+  }
+
+  .chat-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+  }
+
+  /* ---- Sidebar ---- */
+  .sidebar {
+    width: 320px; flex-shrink: 0;
+    background: #1c110d;
+    border-right: 2px solid var(--border);
+    display: flex; flex-direction: column;
+    height: 100%; overflow-y: auto;
+  }
+  @media (max-width: 850px) { .sidebar { display: none; } }
+
+  .sidebar-header {
+    padding: 16px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--amber);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .sidebar-content-inner {
+    padding: 16px; display: flex; flex-direction: column; gap: 16px;
+  }
+
+  .almanacco-loading {
+    font-size: 13px; color: var(--ink-soft);
+    text-align: center; padding: 20px 0;
+  }
+
+  .alm-card {
+    background: var(--surface);
+    color: var(--ink);
+    padding: 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .alm-card:hover { transform: translateY(-2px); }
+  .alm-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 5px; }
+  .alm-card:nth-child(4n+1)::before { background: var(--amber); }
+  .alm-card:nth-child(4n+1) .alm-card-title { color: var(--amber); }
+  .alm-card:nth-child(4n+2)::before { background: var(--terracotta); }
+  .alm-card:nth-child(4n+2) .alm-card-title { color: var(--terracotta); }
+  .alm-card:nth-child(4n+3)::before { background: #f97316; }
+  .alm-card:nth-child(4n+3) .alm-card-title { color: #f97316; }
+  .alm-card:nth-child(4n+4)::before { background: #eab308; }
+  .alm-card:nth-child(4n+4) .alm-card-title { color: #eab308; }
+
+  .alm-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .alm-card-text { font-size: 13.5px; line-height: 1.6; color: #e2e8f0; }
+  .alm-card .alm-toggle {
+    margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--amber);
+    cursor: pointer; user-select: none; display: inline-block;
+    background: rgba(245, 158, 11, 0.1); padding: 4px 10px; border-radius: 6px;
+  }
+  .alm-card .alm-soluzione {
+    display: none; margin-top: 12px; padding: 12px; background: var(--surface-accent);
+    border-radius: 8px; border-left: 2px dashed var(--amber); font-size: 13px; color: #cbd5e1;
+  }
+  .alm-card .alm-soluzione.show { display: block; animation: fadeIn 0.3s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- AREA CHAT ---- */
+  .chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .welcome {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.05);
+    max-width: 600px;
+    margin: 20px auto;
+    flex-shrink: 0;
+  }
+  .welcome .big-icon { font-size: 54px; margin-bottom: 16px; animation: float 4s ease-in-out infinite; display: inline-block; }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  .welcome h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .welcome p { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 480px; margin: 0 auto; }
+  .suggestions { display: flex; flex-direction: column; gap: 10px; margin-top: 26px; }
+  .suggestion {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-align: left; color: #e2e8f0; transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .suggestion:hover { border-color: var(--amber); background: var(--surface-accent); transform: scale(1.01) translateX(4px); color: #fff; }
+
+  .msg { display: flex; gap: 14px; max-width: 85%; }
+  .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .msg.user .avatar { background: #334155; border: 1.5px solid #475569; }
+  .msg.ai .avatar { background: linear-gradient(135deg, var(--terracotta), var(--amber)); border: 1.5px solid var(--amber); }
+
+  .bubble {
+    padding: 14px 18px; border-radius: 20px; font-size: 15px; line-height: 1.65;
+    border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); width: 100%;
+  }
+  .msg.user .bubble {
+    background: linear-gradient(135deg, #3d2218, #4f2d20); border-color: #6e3e2c;
+    border-radius: 20px 4px 20px 20px; color: #fdf2f0;
+  }
+  .msg.ai .bubble { background: var(--surface); border-radius: 4px 20px 20px 20px; }
+
+  .bubble strong { color: var(--amber); font-weight: 700; }
+
+  .typing { display: flex; gap: 6px; padding: 12px 16px; align-items: center;}
+  .typing span { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; background: var(--terracotta); }
+  .typing span:nth-child(3) { animation-delay: 0.4s; background: var(--amber); }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+
+  /* ---- Input Area ---- */
+  .input-area {
+    padding: 16px 24px;
+    background: #1a100c;
+    border-top: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+  .input-row { display: flex; gap: 12px; align-items: flex-end; max-width: 1000px; margin: 0 auto; width: 100%;}
+  textarea {
+    flex: 1; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
+    color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; padding: 12px 16px;
+    resize: none; outline: none; min-height: 48px; max-height: 120px; overflow-y: auto; line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--amber); box-shadow: 0 0 12px rgba(245, 158, 11, 0.2); background: var(--surface-accent); }
+  textarea::placeholder { color: #8a736a; }
+
+  .send-btn {
+    width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--terracotta), var(--amber));
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0; color: #fff; transition: all 0.2s;
+  }
+  .send-btn:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4); }
+  .send-btn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
+  .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
+
+  /* ---- Tab Chronas (Iframe) ---- */
+  .chronas-wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .chronas-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
+  <div class="logo">🏛️</div>
+  <div class="header-text">
+    <h1>Lucio</h1>
+    <p>📜 Storia · Grandi Civiltà &amp; Eventi · Scuole Medie</p>
+  </div>
+</header>
+
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('chatTab', this)">💬 Chat &amp; Tutor</button>
+  <button class="tab-btn" onclick="switchTab('chronasTab', this)">🌍 Mappa Storica (Chronas)</button>
+</div>
+
+<div class="main-layout">
+
+  <!-- TAB CHAT -->
+  <div id="chatTab" class="tab-content active-content">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">📜 Almanacco Storico</div>
+      <div class="sidebar-content-inner" id="almanaccoContent">
+        <div class="almanacco-loading">🏛️ Caricamento avvenimenti storici del giorno...</div>
+      </div>
+    </aside>
+
+    <div class="chat-column">
+      <div class="topics" id="topics">
+        <div class="topic-chip active" data-topic="">🎮 Tutto</div>
+        <div class="topic-chip" data-topic="antichita">🏛️ Antichità</div>
+        <div class="topic-chip" data-topic="medioevo">🏰 Medioevo</div>
+        <div class="topic-chip" data-topic="rinascimento">🎨 Rinascimento</div>
+        <div class="topic-chip" data-topic="eta-moderna">⛵ Età Moderna</div>
+        <div class="topic-chip" data-topic="eta-contemporanea">🚂 Età Contemporanea</div>
+        <div class="topic-chip" data-topic="personaggi">👑 Personaggi</div>
+      </div>
+
+      <div class="chat" id="chat">
+        <div class="welcome" id="welcome">
+          <div class="big-icon">🏛️</div>
+          <h2>Pronto a viaggiare nel tempo?</h2>
+          <p>Sono Lucio, il tuo tutor di storia. Dai faraoni d'Egitto alle guerre mondiali, chiedimi qualsiasi fatto, causa o personaggio!</p>
+          <div class="suggestions">
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🏛️</span>Quali furono le cause della caduta dell'Impero Romano?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🏰</span>Come funzionava il sistema feudale nel Medioevo?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>⛵</span>Perché la scoperta dell'America ha cambiato la storia?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>👑</span>Chi era Giulio Cesare e perché è così famoso?</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <textarea id="input" placeholder="Chiedi qualcosa a Lucio... (es. spiegami la Rivoluzione Francese)" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">🚀</button>
+        </div>
+        <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
+      </div>
+    </div><!-- /chat-column -->
+  </div><!-- /chatTab -->
+
+  <!-- TAB CHRONAS IFRAME -->
+  <div id="chronasTab" class="tab-content">
+    <div class="chronas-wrap">
+      <iframe class="chronas-iframe" src="https://chronas.org/" title="Chronas History Map"></iframe>
+    </div>
+  </div><!-- /chronasTab -->
+
+</div><!-- /main-layout -->
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const welcome = document.getElementById('welcome');
+let history = [];
+let activeTopic = '';
+
+document.querySelectorAll('.topic-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeTopic = chip.dataset.topic;
+  });
+});
+
+input.addEventListener('input', () => {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+});
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+function sendSuggestion(btn) {
+  const text = btn.textContent.trim().replace(/^.\s/, '');
+  input.value = text;
+  sendMessage();
+}
+
+function switchTab(tabId, element) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
+
+  element.classList.add('active');
+  document.getElementById(tabId).classList.add('active-content');
+}
+
+async function caricaAlmanacco() {
+  const el = document.getElementById('almanaccoContent');
+  try {
+    const res = await fetch('/almanacco-storia');
+    const a = await res.json();
+
+    el.innerHTML = `
+      <div class="alm-card">
+        <div class="alm-card-title">🧩 Enigma Storico</div>
+        <div class="alm-card-text">${a.quesito_laterale}</div>
+        <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Soluzione 👁️‍🗨️</span>
+        <div class="alm-soluzione">${a.soluzione_quesito}</div>
+      </div>
+      <div class="alm-card">
+        <div class="alm-card-title">💡 Curiosità dal Passato</div>
+        <div class="alm-card-text">${a.curiosita}</div>
+      </div>
+      <div class="alm-card">
+        <div class="alm-card-title">📜 Personaggio del Giorno</div>
+        <div class="alm-card-text"><strong>${a.storia_titolo}</strong><br><br>${a.storia_testo}</div>
+      </div>
+      <div class="alm-card">
+        <div class="alm-card-title">❓ Quiz di Lucio</div>
+        <div class="alm-card-text">${a.indovinello}</div>
+        <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Risposta 👁️‍🗨️</span>
+        <div class="alm-soluzione">${a.soluzione_indovinello}</div>
+      </div>
+    `;
+  } catch (err) {
+    el.innerHTML = '<div class="almanacco-loading">Almanacco non disponibile al momento.</div>';
+  }
+}
+caricaAlmanacco();
+
+function addMessage(role, content) {
+  if (welcome) welcome.style.display = 'none';
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  avatar.textContent = role === 'user' ? '👤' : '🏛️';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = formatContent(content);
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return bubble;
+}
+
+function addTyping() {
+  const msg = document.createElement('div');
+  msg.className = 'msg ai'; msg.id = 'typing';
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar'; avatar.textContent = '🏛️';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble typing';
+  bubble.innerHTML = '<span></span><span></span><span></span>';
+  msg.appendChild(avatar); msg.appendChild(bubble);
+  chat.appendChild(msg); chat.scrollTop = chat.scrollHeight;
+}
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function formatContent(text) {
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || sendBtn.disabled) return;
+  input.value = ''; input.style.height = 'auto';
+  sendBtn.disabled = true;
+
+  addMessage('user', text);
+  history.push({ role: 'user', content: text });
+  if (activeTopic) {
+    history[history.length - 1].content = `[Argomento: ${activeTopic}] ${text}`;
+  }
+  addTyping();
+
+  try {
+    const res = await fetch('/chat-storia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    });
+    const data = await res.json();
+    const reply = data.reply || 'Errore nella risposta.';
+    removeTyping();
+    addMessage('ai', reply);
+    history[history.length - 1].content = text;
+    history.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    removeTyping();
+    addMessage('ai', 'Errore di connessione. Riprova.');
+  }
+  sendBtn.disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>

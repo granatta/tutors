@@ -133,7 +133,8 @@ def parola_del_giorno():
     if not forza_rigenerazione and os.path.exists(PAROLA_FILE):
         with open(PAROLA_FILE, "r", encoding="utf-8") as f:
             cache = json.load(f)
-        if cache.get("data") == oggi:
+        if oggi == oggi:
+#        if cache.get("data") == oggi:
             return jsonify(cache["contenuto"])
 
     tema = scegli_tema()
