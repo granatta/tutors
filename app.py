@@ -8,6 +8,8 @@ from materie.grammatica import grammatica_bp
 from materie.storia import storia_bp
 from materie.inglese import inglese_bp
 from materie.tedesco import tedesco_bp
+from materie.geografia import geografia_bp
+from materie.musica import musica_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -18,6 +20,8 @@ app.register_blueprint(grammatica_bp)
 app.register_blueprint(storia_bp)
 app.register_blueprint(inglese_bp)
 app.register_blueprint(tedesco_bp)
+app.register_blueprint(geografia_bp)
+app.register_blueprint(musica_bp)
 
 
 @app.route("/")
