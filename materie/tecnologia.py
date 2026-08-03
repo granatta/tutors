@@ -122,7 +122,8 @@ def almanacco_tecnologia():
     if os.path.exists(ALMANACCO_TECNOLOGIA_FILE):
         with open(ALMANACCO_TECNOLOGIA_FILE, "r", encoding="utf-8") as f:
             cache = json.load(f)
-            if cache.get("data") == oggi:
+#            if cache.get("data") == oggi:
+            if oggi == oggi:
                 return jsonify(cache["contenuto"])
 
     tema_ambito, descr_ambito = scegli_tema("ambito", TEMI_AMBITI)

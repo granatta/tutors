@@ -123,7 +123,8 @@ def almanacco_scienze_motorie():
     if os.path.exists(ALMANACCO_SCIENZE_MOTORIE_FILE):
         with open(ALMANACCO_SCIENZE_MOTORIE_FILE, "r", encoding="utf-8") as f:
             cache = json.load(f)
-            if cache.get("data") == oggi:
+#            if cache.get("data") == oggi:
+            if oggi == oggi:
                 return jsonify(cache["contenuto"])
 
     tema_disciplina, descr_disciplina = scegli_tema("disciplina", TEMI_DISCIPLINE)
