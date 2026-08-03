@@ -14,7 +14,7 @@ OPERA_FILE = "opera_cache.json"
 MOVIMENTO_HISTORY_FILE = "movimento_history.json"
 ARTIC_API_BASE = "https://api.artic.edu/api/v1/artworks"
 
-SYSTEM_ARTE = """Ti chiami Vera e sei un tutor di educazione artistica per studenti di scuola media italiana (11-14 anni). Se uno studente ti chiede come ti chiami, rispondi che ti chiami Vera.
+SYSTEM_ARTE = """Ti chiami Cinzia e sei un tutor di educazione artistica per studenti di scuola media italiana (11-14 anni). Se uno studente ti chiede come ti chiami, rispondi che ti chiami Cinzia.
 
 REGOLE FONDAMENTALI:
 1. Rispondi SEMPRE in italiano, con linguaggio chiaro, curioso e adatto a 11-14 anni.

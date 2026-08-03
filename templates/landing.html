@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I tuoi Super Tutor — Scuole Medie</title>
+<title>AI-uto&#58; Tutor per le Scuole Medie</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
@@ -22,6 +22,8 @@
     --gold: #d4a017;
     --emerald: #10b981;
     --violet: #9333ea;
+    --sky: #0ea5e9;
+    --lime: #f97316;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -90,6 +92,8 @@
   .tutor-card.tedesco .tutor-icon { background: linear-gradient(135deg, var(--gold), #92400e); }
   .tutor-card.geografia .tutor-icon { background: linear-gradient(135deg, var(--emerald), #047857); }
   .tutor-card.musica .tutor-icon { background: linear-gradient(135deg, var(--violet), #6b21a8); }
+  .tutor-card.tecnologia .tutor-icon { background: linear-gradient(135deg, var(--sky), #0369a1); }
+  .tutor-card.scienze-motorie .tutor-icon { background: linear-gradient(135deg, var(--lime), #c2410c); }
 
 
 
@@ -111,13 +115,15 @@
   .tutor-card.tedesco .go { color: var(--gold); }
   .tutor-card.geografia .go { color: var(--emerald); }
   .tutor-card.musica .go { color: var(--violet); }
+  .tutor-card.tecnologia .go { color: var(--sky); }
+  .tutor-card.scienze-motorie .go { color: var(--lime); }
 
 </style>
 </head>
 <body>
 
 <div class="intro">
-  <h1>I tuoi Super Tutor 🚀</h1>
+  <h1>AI-uto&#58; Tutor a portata di click! 🚀</h1>
   <p> Scuole Medie </p>
   <p>Scegli la materia con cui vuoi allenarti oggi. Ogni tutor ha il suo almanacco giornaliero e ti aiuta con spiegazioni su misura per te. </p>
 </div>
@@ -143,7 +149,7 @@
     <p>Viaggia nella lingua e letteratura italiana: risolvi analisi logica e del periodo, interroga autori e scopri il testo classico del giorno.</p>
     <div class="go">Entra nella chat →</div>
   </a>
-    <a href="/coming-soon" class="tutor-card storia">
+    <a href="/storia" class="tutor-card storia">
     <div class="tutor-icon">🏛️</div>
     <h2>Lucio — Storia</h2>
     <p>Viaggia nel tempo fino all'Antica Roma e oltre: esplora battaglie, alleanze e la vita quotidiana della gente, con il fatto storico del giorno.</p>
@@ -166,7 +172,7 @@
 
   <a href="/geografia" class="tutor-card geografia">
     <div class="tutor-icon">🌍</div>
-    <h2>Amerigo — Geografia</h2>
+    <h2>Frida — Geografia</h2>
     <p>Esplora il pianeta tra montagne, climi, stati e culture: scopri il luogo del giorno e mettiti alla prova con l'atlante interattivo.</p>
     <div class="go">Entra nella chat →</div>
   </a>
@@ -175,6 +181,20 @@
     <div class="tutor-icon">🎵</div>
     <h2>Nina — Musica</h2>
     <p>Viaggia tra note, strumenti e generi musicali: scopri il musicista del giorno e sperimenta il suono nel laboratorio sonoro.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+  <a href="/tecnologia" class="tutor-card tecnologia">
+    <div class="tutor-icon">⚙️</div>
+    <h2>Leo — Tecnologia</h2>
+    <p>Scopri materiali, energia e informatica: conosci l'inventore del giorno e sperimenta nel laboratorio circuiti interattivo.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+  <a href="/scienze-motorie" class="tutor-card scienze-motorie">
+    <div class="tutor-icon">🏃</div>
+    <h2>Sara — Scienze Motorie</h2>
+    <p>Allenati tra corpo, sport e movimento: scopri l'atleta del giorno e mettiti alla prova con il timer di allenamento a circuito.</p>
     <div class="go">Entra nella chat →</div>
   </a>
 

@@ -10,6 +10,8 @@ from materie.inglese import inglese_bp
 from materie.tedesco import tedesco_bp
 from materie.geografia import geografia_bp
 from materie.musica import musica_bp
+from materie.tecnologia import tecnologia_bp
+from materie.scienze_motorie import scienze_motorie_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -22,6 +24,8 @@ app.register_blueprint(inglese_bp)
 app.register_blueprint(tedesco_bp)
 app.register_blueprint(geografia_bp)
 app.register_blueprint(musica_bp)
+app.register_blueprint(tecnologia_bp)
+app.register_blueprint(scienze_motorie_bp)
 
 
 @app.route("/")

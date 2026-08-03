@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frida — Il tuo Super Tutor di Geografia</title>
+<title>Leo — Il tuo Super Tutor di Tecnologia</title>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap');
 
   :root {
-    --bg: #0a1614;
-    --surface: #12241f;
-    --surface-accent: #1a362e;
-    --border: #2a4d40;
-    --ink: #faf8f7;
-    --ink-soft: #a8c4bb;
+    --bg: #071019;
+    --surface: #0f1f30;
+    --surface-accent: #16293e;
+    --border: #24405c;
+    --ink: #f4f8fb;
+    --ink-soft: #9fbcd4;
 
-    /* Palette Geografia: verde smeraldo + teal */
-    --terracotta: #0d9488;
-    --terracotta-glow: rgba(13, 148, 136, 0.25);
-    --amber: #10b981;
-    --bronze: #047857;
-    --crimson: #dc2626;
+    /* Palette Tecnologia: blu elettrico + ciano */
+    --terracotta: #0ea5e9;
+    --terracotta-glow: rgba(14, 165, 233, 0.25);
+    --amber: #22d3ee;
+    --bronze: #0369a1;
+    --crimson: #f59e0b;
 
     --radius: 16px;
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-    --shadow-neon: 0 0 15px rgba(13, 148, 136, 0.4);
+    --shadow-neon: 0 0 15px rgba(14, 165, 233, 0.4);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +46,7 @@
     align-items: center;
     gap: 16px;
     padding: 16px 24px;
-    background: linear-gradient(135deg, #0f221c, var(--surface));
+    background: linear-gradient(135deg, #0a1826, var(--surface));
     border-bottom: 2px solid var(--border);
     flex-shrink: 0;
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
@@ -66,8 +66,8 @@
     animation: pulse 3s infinite alternate;
   }
   @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 10px rgba(13, 148, 136, 0.4); }
-    100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(14, 165, 233, 0.4); }
+    100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(34, 211, 238, 0.6); }
   }
   .header-text h1 {
     font-family: 'Space Grotesk', sans-serif;
@@ -88,7 +88,7 @@
     display: flex; gap: 10px;
     padding: 12px 24px;
     overflow-x: auto; flex-shrink: 0;
-    background: #0d1f1a;
+    background: #0a1522;
     border-bottom: 1px solid var(--border);
     scrollbar-width: none;
   }
@@ -115,7 +115,7 @@
   /* ---- Barra dei Tab ---- */
   .tabs-bar {
     display: flex;
-    background: #060f0d;
+    background: #050c14;
     border-bottom: 2px solid var(--border);
     padding: 0 24px;
     gap: 8px;
@@ -151,7 +151,7 @@
     display: flex;
     overflow: hidden;
     min-height: 0;
-    background: #071310;
+    background: #060d14;
   }
 
   .tab-content {
@@ -177,7 +177,7 @@
   /* ---- Sidebar ---- */
   .sidebar {
     width: 320px; flex-shrink: 0;
-    background: #0e211b;
+    background: #0b1826;
     border-right: 2px solid var(--border);
     display: flex; flex-direction: column;
     height: 100%; overflow-y: auto;
@@ -217,10 +217,10 @@
   .alm-card:nth-child(4n+1) .alm-card-title { color: var(--amber); }
   .alm-card:nth-child(4n+2)::before { background: var(--terracotta); }
   .alm-card:nth-child(4n+2) .alm-card-title { color: var(--terracotta); }
-  .alm-card:nth-child(4n+3)::before { background: #22c55e; }
-  .alm-card:nth-child(4n+3) .alm-card-title { color: #22c55e; }
-  .alm-card:nth-child(4n+4)::before { background: #06b6d4; }
-  .alm-card:nth-child(4n+4) .alm-card-title { color: #06b6d4; }
+  .alm-card:nth-child(4n+3)::before { background: #38bdf8; }
+  .alm-card:nth-child(4n+3) .alm-card-title { color: #38bdf8; }
+  .alm-card:nth-child(4n+4)::before { background: #6366f1; }
+  .alm-card:nth-child(4n+4) .alm-card-title { color: #6366f1; }
 
   .alm-card-title {
     font-family: 'Space Grotesk', sans-serif;
@@ -234,7 +234,7 @@
   .alm-card .alm-toggle {
     margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--amber);
     cursor: pointer; user-select: none; display: inline-block;
-    background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 6px;
+    background: rgba(34, 211, 238, 0.1); padding: 4px 10px; border-radius: 6px;
   }
   .alm-card .alm-soluzione {
     display: none; margin-top: 12px; padding: 12px; background: var(--surface-accent);
@@ -297,8 +297,8 @@
     border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); width: 100%;
   }
   .msg.user .bubble {
-    background: linear-gradient(135deg, #12332b, #184238); border-color: #1f5c4d;
-    border-radius: 20px 4px 20px 20px; color: #fdf2f0;
+    background: linear-gradient(135deg, #1a3049, #1f3a59); border-color: #2f5a82;
+    border-radius: 20px 4px 20px 20px; color: #f0f9ff;
   }
   .msg.ai .bubble { background: var(--surface); border-radius: 4px 20px 20px 20px; }
 
@@ -313,7 +313,7 @@
   /* ---- Input Area ---- */
   .input-area {
     padding: 16px 24px;
-    background: #0d1f1a;
+    background: #0a1522;
     border-top: 2px solid var(--border);
     flex-shrink: 0;
   }
@@ -323,48 +323,29 @@
     color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; padding: 12px 16px;
     resize: none; outline: none; min-height: 48px; max-height: 120px; overflow-y: auto; line-height: 1.5;
   }
-  textarea:focus { border-color: var(--amber); box-shadow: 0 0 12px rgba(16, 185, 129, 0.2); background: var(--surface-accent); }
-  textarea::placeholder { color: #6b968a; }
+  textarea:focus { border-color: var(--amber); box-shadow: 0 0 12px rgba(34, 211, 238, 0.2); background: var(--surface-accent); }
+  textarea::placeholder { color: #6c93b3; }
 
   .send-btn {
     width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--terracotta), var(--amber));
     border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
     font-size: 20px; flex-shrink: 0; color: #fff; transition: all 0.2s;
   }
-  .send-btn:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
+  .send-btn:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 6px 16px rgba(34, 211, 238, 0.4); }
   .send-btn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
   .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
 
-  /* ---- Tab Atlante (Iframe) ---- */
-  .geo-wrap {
+  /* ---- Tab Laboratorio Circuiti (Iframe) ---- */
+  .tech-wrap {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
   }
-  .geo-fallback-bar {
-    flex-shrink: 0;
-    padding: 8px 16px;
-    background: #0d1f1a;
-    border-bottom: 1px solid var(--border);
-    font-size: 12.5px;
-    color: var(--ink-soft);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .geo-fallback-bar a {
-    color: var(--amber);
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .geo-fallback-bar a:hover { text-decoration: underline; }
-  .geo-iframe {
+  .tech-iframe {
     width: 100%;
     height: 100%;
     border: none;
-    flex: 1;
   }
 </style>
 </head>
@@ -372,16 +353,16 @@
 
 <header>
   <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
-  <div class="logo">🌍</div>
+  <div class="logo">⚙️</div>
   <div class="header-text">
-    <h1>Frida</h1>
-    <p>🗺️ Geografia · Territori &amp; Mondo · Scuole Medie</p>
+    <h1>Leo</h1>
+    <p>💻 Tecnologia · Informatica, Materiali &amp; Invenzioni · Scuole Medie</p>
   </div>
 </header>
 
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="switchTab('chatTab', this)">💬 Chat &amp; Tutor</button>
-  <button class="tab-btn" onclick="switchTab('geoTab', this)">🧭 Atlante Interattivo</button>
+  <button class="tab-btn" onclick="switchTab('techTab', this)">🔌 Laboratorio Circuiti (PhET)</button>
 </div>
 
 <div class="main-layout">
@@ -389,40 +370,40 @@
   <!-- TAB CHAT -->
   <div id="chatTab" class="tab-content active-content">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">🗺️ Almanacco Geografico</div>
+      <div class="sidebar-header">⚡ Almanacco Tecnologico</div>
       <div class="sidebar-content-inner" id="almanaccoContent">
-        <div class="almanacco-loading">🌍 Caricamento avvenimenti geografici del giorno...</div>
+        <div class="almanacco-loading">💻 Caricamento novità tecnologiche del giorno...</div>
       </div>
     </aside>
 
     <div class="chat-column">
       <div class="topics" id="topics">
         <div class="topic-chip active" data-topic="">🎮 Tutto</div>
-        <div class="topic-chip" data-topic="fisica">🏔️ Geografia Fisica</div>
-        <div class="topic-chip" data-topic="climatologia">🌦️ Clima</div>
-        <div class="topic-chip" data-topic="stati-capitali">🏳️ Stati &amp; Capitali</div>
-        <div class="topic-chip" data-topic="popoli">🧑‍🤝‍🧑 Popoli &amp; Culture</div>
-        <div class="topic-chip" data-topic="economia">🏭 Economia</div>
-        <div class="topic-chip" data-topic="ambiente">🌱 Ambiente</div>
+        <div class="topic-chip" data-topic="informatica">💻 Informatica</div>
+        <div class="topic-chip" data-topic="materiali">🧱 Materiali</div>
+        <div class="topic-chip" data-topic="energia">⚡ Energia</div>
+        <div class="topic-chip" data-topic="robotica">🤖 Robotica</div>
+        <div class="topic-chip" data-topic="disegno-tecnico">📐 Disegno Tecnico</div>
+        <div class="topic-chip" data-topic="invenzioni">💡 Invenzioni</div>
       </div>
 
       <div class="chat" id="chat">
         <div class="welcome" id="welcome">
-          <div class="big-icon">🌍</div>
-          <h2>Pronto a esplorare il pianeta?</h2>
-          <p>Sono Frida, il tuo tutor di geografia. Dai vulcani alle capitali del mondo, chiedimi qualsiasi cosa su territori, climi e popoli!</p>
+          <div class="big-icon">⚙️</div>
+          <h2>Pronto a esplorare il mondo della tecnologia?</h2>
+          <p>Sono Leo, il tuo tutor di tecnologia. Da Leonardo da Vinci ai robot di oggi, chiedimi qualsiasi cosa su materiali, energia, informatica e invenzioni!</p>
           <div class="suggestions">
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>🏔️</span>Perché si formano i vulcani e dove si trovano?</button>
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>🌦️</span>Qual è la differenza tra clima e tempo atmosferico?</button>
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>🏳️</span>Quali sono le capitali dei paesi confinanti con l'Italia?</button>
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>🌊</span>Perché il Rio delle Amazzoni è così importante?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>⚡</span>Qual è la differenza tra energia rinnovabile e non rinnovabile?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🔌</span>Come funziona un circuito elettrico?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>💻</span>Come fa un computer a "capire" quello che scriviamo?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>💡</span>Chi ha inventato internet e come funziona?</button>
           </div>
         </div>
       </div>
 
       <div class="input-area">
         <div class="input-row">
-          <textarea id="input" placeholder="Chiedi qualcosa a Frida... (es. spiegami i fusi orari)" rows="1"></textarea>
+          <textarea id="input" placeholder="Chiedi qualcosa a Leo... (es. spiegami come funziona un circuito)" rows="1"></textarea>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()">🚀</button>
         </div>
         <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
@@ -430,16 +411,12 @@
     </div><!-- /chat-column -->
   </div><!-- /chatTab -->
 
-  <!-- TAB ATLANTE IFRAME -->
-  <div id="geoTab" class="tab-content">
-    <div class="geo-wrap">
-      <div class="geo-fallback-bar">
-        <span>🧭 Se la mappa non si carica, aprila in una scheda nuova:</span>
-        <a href="https://www.sheppardsoftware.com/Geography.htm" target="_blank" rel="noopener">Apri Sheppard Software ↗</a>
-      </div>
-      <iframe class="geo-iframe" src="https://www.sheppardsoftware.com/Geography.htm" title="Sheppard Software - Giochi di Geografia"></iframe>
+  <!-- TAB LABORATORIO CIRCUITI IFRAME -->
+  <div id="techTab" class="tab-content">
+    <div class="tech-wrap">
+      <iframe class="tech-iframe" src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html?locale=it" title="PhET Circuit Construction Kit" allowfullscreen></iframe>
     </div>
-  </div><!-- /geoTab -->
+  </div><!-- /techTab -->
 
 </div><!-- /main-layout -->
 
@@ -484,26 +461,26 @@ function switchTab(tabId, element) {
 async function caricaAlmanacco() {
   const el = document.getElementById('almanaccoContent');
   try {
-    const res = await fetch('/almanacco-geografia');
+    const res = await fetch('/almanacco-tecnologia');
     const a = await res.json();
 
     el.innerHTML = `
       <div class="alm-card">
-        <div class="alm-card-title">🧩 Enigma Geografico</div>
+        <div class="alm-card-title">🧩 Enigma Tecnologico</div>
         <div class="alm-card-text">${a.quesito_laterale}</div>
         <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Soluzione 👁️‍🗨️</span>
         <div class="alm-soluzione">${a.soluzione_quesito}</div>
       </div>
       <div class="alm-card">
-        <div class="alm-card-title">💡 Curiosità dal Mondo</div>
+        <div class="alm-card-title">💡 Curiosità Tecnologica</div>
         <div class="alm-card-text">${a.curiosita}</div>
       </div>
       <div class="alm-card">
-        <div class="alm-card-title">🗺️ Luogo del Giorno</div>
-        <div class="alm-card-text"><strong>${a.luogo_titolo}</strong><br><br>${a.luogo_testo}</div>
+        <div class="alm-card-title">🔧 Inventore del Giorno</div>
+        <div class="alm-card-text"><strong>${a.inventore_titolo}</strong><br><br>${a.inventore_testo}</div>
       </div>
       <div class="alm-card">
-        <div class="alm-card-title">❓ Quiz di Frida/div>
+        <div class="alm-card-title">❓ Quiz di Leo</div>
         <div class="alm-card-text">${a.indovinello}</div>
         <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Risposta 👁️‍🗨️</span>
         <div class="alm-soluzione">${a.soluzione_indovinello}</div>
@@ -521,7 +498,7 @@ function addMessage(role, content) {
   msg.className = `msg ${role}`;
   const avatar = document.createElement('div');
   avatar.className = 'avatar';
-  avatar.textContent = role === 'user' ? '👤' : '🌍';
+  avatar.textContent = role === 'user' ? '👤' : '⚙️';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.innerHTML = formatContent(content);
@@ -536,7 +513,7 @@ function addTyping() {
   const msg = document.createElement('div');
   msg.className = 'msg ai'; msg.id = 'typing';
   const avatar = document.createElement('div');
-  avatar.className = 'avatar'; avatar.textContent = '🌍';
+  avatar.className = 'avatar'; avatar.textContent = '⚙️';
   const bubble = document.createElement('div');
   bubble.className = 'bubble typing';
   bubble.innerHTML = '<span></span><span></span><span></span>';
@@ -569,7 +546,7 @@ async function sendMessage() {
   addTyping();
 
   try {
-    const res = await fetch('/chat-geografia', {
+    const res = await fetch('/chat-tecnologia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: history })
