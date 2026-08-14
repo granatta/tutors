@@ -118,6 +118,122 @@
   .tutor-card.tecnologia .go { color: var(--sky); }
   .tutor-card.scienze-motorie .go { color: var(--lime); }
 
+  /* --- Safety notice & modal --- */
+  .safety-banner {
+    max-width: 720px;
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-left: 4px solid var(--cyan);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .safety-banner strong { color: var(--ink); }
+
+  .safety-link-wrap {
+    max-width: 720px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .safety-link {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .safety-link:hover { border-color: var(--cyan); color: var(--ink); }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 15, 0.75);
+    backdrop-filter: blur(2px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 100;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    max-width: 620px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+  }
+  .modal-box h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .modal-box h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15.5px;
+    margin: 20px 0 8px;
+    color: var(--ink);
+  }
+  .modal-box p {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .modal-box ul {
+    margin: 8px 0 12px 20px;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .modal-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    background: var(--surface-accent);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { border-color: var(--cyan); }
+
+  .site-footer {
+    max-width: 720px;
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    opacity: 0.75;
+  }
+
 </style>
 </head>
 <body>
@@ -126,6 +242,10 @@
   <h1>AI-uto&#58; Tutor a portata di click! 🚀</h1>
   <p> Scuole Medie </p>
   <p>Scegli la materia con cui vuoi allenarti oggi. Ogni tutor ha il suo almanacco giornaliero e ti aiuta con spiegazioni su misura per te. </p>
+</div>
+
+<div class="safety-banner">
+  💡 I tutor sono un aiuto per lo studio, non un sostituto dell'insegnante o dell'adulto di riferimento. <strong>Le risposte sono generate dall'IA e possono contenere errori</strong>: per informazioni importanti o situazioni personali, chiedi sempre conferma a un adulto.
 </div>
 
 <div class="cards">
@@ -198,6 +318,56 @@
     <div class="go">Entra nella chat →</div>
   </a>
 
+</div>
+
+<div class="safety-link-wrap">
+  <button class="safety-link" onclick="document.getElementById('parents-modal').classList.add('open')">👨‍👩‍👧 Informazioni per genitori e docenti</button>
+</div>
+
+<div class="modal-overlay" id="parents-modal" onclick="if(event.target===this) this.classList.remove('open')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('parents-modal').classList.remove('open')" aria-label="Chiudi">✕</button>
+    <h3>👨‍👩‍👧 Informazioni per genitori e docenti</h3>
+
+    <h4>🤖 Come funziona il servizio</h4>
+    <p>I tutor di AI-uto sono realizzati con modelli di intelligenza artificiale linguistica, usati tramite API. Il modello genera ogni risposta in tempo reale a partire dalla domanda dello studente: non sono risposte pre-scritte.</p>
+
+    <h4>📚 Tutor specializzati per materia</h4>
+    <p>Ogni tutor (Matematica, Arte, Italiano, Storia, Inglese, Tedesco, Geografia, Musica, Tecnologia, Scienze Motorie) ha istruzioni specifiche per la propria disciplina e un tono adatto agli studenti delle scuole medie. Ogni tutor è impostato per restare nel proprio ambito e indirizzare lo studente verso un insegnante o un adulto quando la domanda esce da quell'ambito.</p>
+
+    <h4>⚠️ L'IA può sbagliare</h4>
+    <p>Anche con le protezioni messe in atto, l'IA può occasionalmente fornire informazioni imprecise, incomplete o interpretare male una domanda. Il tutor è un supporto allo studio, non una fonte definitiva: per verifiche o argomenti delicati resta importante il confronto con un insegnante o un adulto.</p>
+
+    <h4>🛡️ Limitazioni imposte ai tutor</h4>
+    <p>Ogni tutor è configurato per:</p>
+    <ul>
+      <li>rispondere solo su argomenti pertinenti alla propria materia, reindirizzando le domande fuori tema;</li>
+      <li>usare un linguaggio adatto all'età degli utenti (11-14 anni);</li>
+      <li>non farsi convincere a cambiare identità, regole o comportamento tramite messaggi in chat, giochi di ruolo o richieste indirette;</li>
+      <li>evitare contenuti non adatti a un pubblico di scuola media;</li>
+      <li>invitare lo studente a rivolgersi a un adulto per questioni personali, sanitarie, psicologiche o comunque estranee all'ambito didattico.</li>
+    </ul>
+
+    <h4>📤 Dati inviati al provider dell'IA</h4>
+    <p>Il testo scritto dallo studente nella chat e la cronologia della conversazione in corso vengono inviati al provider IA per generare la risposta. Non chiediamo né inviamo dati come nome completo, indirizzo o dati scolastici ufficiali, a meno che lo studente stesso non li scriva nel messaggio.</p>
+
+    <h4>🗄️ Conservazione dei dati</h4>
+    <p>Le conversazioni <strong>non vengono memorizzate</strong>: al termine della sessione il contenuto della chat non resta salvato sui nostri sistemi.</p>
+
+    <h4>🚫 Dati non raccolti</h4>
+    <p>Non è richiesto alcun login o account per usare i tutor: <strong>non raccogliamo dati di accesso, nome, email o altri dati identificativi</strong> degli studenti.</p>
+
+    <h4>🚩 Come segnalare una risposta inappropriata</h4>
+    <p>Per segnalare una risposta inappropriata scrivi a <a href="mailto:[email di segnalazione]" style="color: var(--cyan);">[email di segnalazione]</a>, indicando quando possibile la materia del tutor e una descrizione di quanto accaduto.</p>
+
+    <h4>✉️ Titolare del progetto</h4>
+    <p>Il progetto è a cura di ACME Corporation (Willy il Coyote).</p>
+  </div>
+</div>
+
+<div class="site-footer">
+  © 2026 AI-uto&#58; Tutor per le Scuole Medie. Tutti i diritti riservati.<br>
+  I testi originali, la grafica, il codice, la struttura del sito e i materiali didattici ideati per questo progetto sono protetti dalla normativa applicabile in materia di proprietà intellettuale, salvo diversa indicazione. La riproduzione o il riutilizzo non autorizzato di tali elementi è vietato, salvo quanto previsto dalla legge.
 </div>
 
 </body>
