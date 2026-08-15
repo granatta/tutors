@@ -35,9 +35,12 @@
     background: var(--bg);
     color: var(--ink);
     height: 100vh;
+    height: 100dvh;
+    height: calc(var(--app-height, 100vh));
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   /* ---- Header ---- */
@@ -149,7 +152,8 @@
   .main-layout {
     flex: 1;
     display: flex;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     min-height: 0;
     background: #0f0806;
   }
@@ -159,7 +163,8 @@
     width: 100%;
     height: 100%;
     flex: 1;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .tab-content.active-content {
@@ -335,18 +340,48 @@
   .send-btn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.4; transform: none; box-shadow: none; }
   .input-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; font-weight: 500; }
 
-  /* ---- Tab Chronas (Iframe) ---- */
+  /* ---- Tab Chronas (link esterno, niente più iframe) ---- */
   .chronas-wrap {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-y: auto;
   }
-  .chronas-iframe {
+  .chronas-card {
+    max-width: 440px;
     width: 100%;
-    height: 100%;
-    border: none;
+    text-align: center;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 32px;
   }
+  .chronas-card .chronas-icon { font-size: 48px; margin-bottom: 16px; }
+  .chronas-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px; font-weight: 700; color: #fff;
+    margin-bottom: 10px;
+  }
+  .chronas-card p {
+    font-size: 14px; line-height: 1.6; color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .chronas-open-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--terracotta), var(--amber));
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14.5px; font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: var(--shadow-neon);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .chronas-open-btn:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
 </style>
 </head>
 <body>
@@ -411,10 +446,15 @@
     </div><!-- /chat-column -->
   </div><!-- /chatTab -->
 
-  <!-- TAB CHRONAS IFRAME -->
+  <!-- TAB CHRONAS (link esterno) -->
   <div id="chronasTab" class="tab-content">
     <div class="chronas-wrap">
-      <iframe class="chronas-iframe" src="https://chronas.org/" title="Chronas History Map"></iframe>
+      <div class="chronas-card">
+        <div class="chronas-icon">🌍</div>
+        <h3>Mappa Storica Chronas</h3>
+        <p>Chronas è una mappa storica interattiva: esplora imperi, confini e civiltà lungo i secoli. Si apre in una nuova scheda del browser per funzionare al meglio, con tutti i suoi controlli visibili correttamente.</p>
+        <a class="chronas-open-btn" href="https://old.chronas.org/" target="_blank" rel="noopener">↗ Apri Chronas</a>
+      </div>
     </div>
   </div><!-- /chronasTab -->
 
@@ -448,6 +488,18 @@ function sendSuggestion(btn) {
   const text = btn.textContent.trim().replace(/^.\s/, '');
   input.value = text;
   sendMessage();
+}
+
+// --- Fix altezza reale su mobile (gestisce tastiera on-screen, barra indirizzi, ecc.) ---
+function setAppHeight() {
+  const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  document.documentElement.style.setProperty('--app-height', h + 'px');
+}
+setAppHeight();
+window.addEventListener('resize', setAppHeight);
+window.addEventListener('orientationchange', setAppHeight);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', setAppHeight);
 }
 
 function switchTab(tabId, element) {

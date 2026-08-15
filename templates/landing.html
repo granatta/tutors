@@ -36,6 +36,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .page-content {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     padding: 40px 20px;
   }
@@ -119,21 +127,6 @@
   .tutor-card.scienze-motorie .go { color: var(--lime); }
 
   /* --- Safety notice & modal --- */
-  .safety-banner {
-    max-width: 720px;
-    width: 100%;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-left: 4px solid var(--cyan);
-    border-radius: 14px;
-    padding: 16px 20px;
-    margin-bottom: 28px;
-    font-size: 13.5px;
-    line-height: 1.6;
-    color: var(--ink-soft);
-  }
-  .safety-banner strong { color: var(--ink); }
-
   .safety-link-wrap {
     max-width: 720px;
     width: 100%;
@@ -234,18 +227,70 @@
     opacity: 0.75;
   }
 
+  .intro-banner {
+    width: 100%;
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border);
+    padding: 10px 16px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+  .intro-banner.visible { display: flex; }
+  .intro-banner p {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    max-width: 520px;
+    line-height: 1.45;
+    margin: 0;
+  }
+  .intro-banner .banner-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .intro-banner button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+  .intro-banner .btn-read {
+    background: none;
+    color: var(--ink-soft);
+  }
+  .intro-banner .btn-read:hover { color: var(--ink); border-color: var(--cyan); }
+  .intro-banner .btn-ok {
+    background: var(--cyan);
+    color: #06202a;
+    border-color: var(--cyan);
+    font-weight: 700;
+  }
+  .intro-banner .btn-ok:hover { opacity: 0.9; }
+
 </style>
 </head>
 <body>
+
+<div class="intro-banner" id="intro-banner">
+  <p>💡 Il tutor è un aiuto per lo studio e può contenere errori: per informazioni importanti chiedi sempre conferma a un adulto. Continuando accetti i <strong>Termini e avvertenze</strong>.</p>
+  <div class="banner-actions">
+    <button class="btn-read" onclick="document.getElementById('legal-modal').classList.add('open')">Leggi tutto</button>
+    <button class="btn-ok" onclick="closeIntroBanner()">Ho capito</button>
+  </div>
+</div>
+
+<div class="page-content">
 
 <div class="intro">
   <h1>AI-uto&#58; Tutor a portata di click! 🚀</h1>
   <p> Scuole Medie </p>
   <p>Scegli la materia con cui vuoi allenarti oggi. Ogni tutor ha il suo almanacco giornaliero e ti aiuta con spiegazioni su misura per te. </p>
-</div>
-
-<div class="safety-banner">
-  💡 I tutor sono un aiuto per lo studio, non un sostituto dell'insegnante o dell'adulto di riferimento. <strong>Le risposte sono generate dall'IA e possono contenere errori</strong>: per informazioni importanti o situazioni personali, chiedi sempre conferma a un adulto.
 </div>
 
 <div class="cards">
@@ -322,12 +367,13 @@
 
 <div class="safety-link-wrap">
   <button class="safety-link" onclick="document.getElementById('parents-modal').classList.add('open')">👨‍👩‍👧 Informazioni per genitori e docenti</button>
+  <button class="safety-link" onclick="document.getElementById('legal-modal').classList.add('open')">📋 Termini e avvertenze</button>
 </div>
 
 <div class="modal-overlay" id="parents-modal" onclick="if(event.target===this) this.classList.remove('open')">
   <div class="modal-box">
     <button class="modal-close" onclick="document.getElementById('parents-modal').classList.remove('open')" aria-label="Chiudi">✕</button>
-    <h3>👨‍👩‍👧 Informazioni per genitori e docenti</h3>
+    <h3>👨‍👩‍👧 Informazioni per genitori</h3>
 
     <h4>🤖 Come funziona il servizio</h4>
     <p>I tutor di AI-uto sono realizzati con modelli di intelligenza artificiale linguistica, usati tramite API. Il modello genera ogni risposta in tempo reale a partire dalla domanda dello studente: non sono risposte pre-scritte.</p>
@@ -361,14 +407,55 @@
     <p>Per segnalare una risposta inappropriata scrivi a <a href="mailto:[email di segnalazione]" style="color: var(--cyan);">[email di segnalazione]</a>, indicando quando possibile la materia del tutor e una descrizione di quanto accaduto.</p>
 
     <h4>✉️ Titolare del progetto</h4>
-    <p>Il progetto è a cura di ACME Corporation (Willy il Coyote).</p>
+    <p>Il progetto è a cura di ACME (Will Coyote).</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="legal-modal" onclick="if(event.target===this) this.classList.remove('open')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('legal-modal').classList.remove('open')" aria-label="Chiudi">✕</button>
+    <h3>📋 Termini e avvertenze</h3>
+
+    <p>I contenuti, le schede pratiche, i suggerimenti di studio e le risposte fornite dai tutor basati su Intelligenza Artificiale presenti su questa piattaforma hanno esclusivamente finalità didattiche, informative e di supporto allo studio.</p>
+
+    <h4>Supervisione e responsabilità genitoriale</h4>
+    <p>L'accesso e l'utilizzo dei contenuti da parte di utenti minori di età devono avvenire sotto la supervisione e la responsabilità di un genitore, tutore legale o docente.</p>
+
+    <h4>Supporto e IA</h4>
+    <p>I tutor virtuali basati su Intelligenza Artificiale costituiscono un ausilio allo studio e non sostituiscono in alcun modo l'insegnamento scolastico, il parere di docenti qualificati o il giudizio professionale umano. Nonostante il costante aggiornamento, le risposte dell'IA potrebbero contenere inesattezze: si invita sempre a verificare le informazioni con i propri libri di testo o con i professori.</p>
+
+    <h4>Attività fisica e salute</h4>
+    <p>Per quanto riguarda le sezioni dedicate alle scienze motorie e all'attività pratica, gli esercizi devono essere svolti solo in presenza di un certificato medico di idoneità sportiva in corso di validità e sotto il controllo di un adulto. In caso di dolore o malessere, l'attività va interrotta immediatamente.</p>
+
+    <h4>Esonero da responsabilità</h4>
+    <p>I gestori e gli autori del sito non potranno essere ritenuti responsabili per eventuali errori, inesattezze nei contenuti, né per infortuni, lesioni o danni di qualsiasi natura derivanti dall'uso improprio delle informazioni o delle funzioni di intelligenza artificiale presenti sulla piattaforma.</p>
+
+    <p style="margin-top: 16px; font-size: 12.5px; opacity: 0.8;">Proseguendo nella navigazione o chiudendo questo avviso, dichiari di aver letto e accettato le presenti condizioni.</p>
   </div>
 </div>
 
 <div class="site-footer">
-  © 2026 AI-uto&#58; Tutor per le Scuole Medie. Tutti i diritti riservati.<br>
+  🌐 Per la migliore esperienza, apri il sito da un browser (Chrome, Safari, Edge...) e non dall'interno di un'altra app.<br><br>
+  © 2026 ACME. Tutti i diritti riservati.<br>
   I testi originali, la grafica, il codice, la struttura del sito e i materiali didattici ideati per questo progetto sono protetti dalla normativa applicabile in materia di proprietà intellettuale, salvo diversa indicazione. La riproduzione o il riutilizzo non autorizzato di tali elementi è vietato, salvo quanto previsto dalla legge.
 </div>
+
+</div>
+
+<script>
+  function closeIntroBanner() {
+    document.getElementById('intro-banner').classList.remove('visible');
+    try { localStorage.setItem('aiuto-terms-acknowledged', '1'); } catch (e) {}
+  }
+
+  (function() {
+    var alreadySeen = false;
+    try { alreadySeen = localStorage.getItem('aiuto-terms-acknowledged') === '1'; } catch (e) {}
+    if (!alreadySeen) {
+      document.getElementById('intro-banner').classList.add('visible');
+    }
+  })();
+</script>
 
 </body>
 </html>
