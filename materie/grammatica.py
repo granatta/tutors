@@ -59,18 +59,18 @@ Ricevi una frase in italiano e devi restituire SOLO un oggetto JSON valido (senz
   ],
   "predicato": {"indice": 1, "tipo": "verbale"},
   "archi": [
-    {"da": 0, "a": 1, "etichetta": "nsubj", "etichetta_it": "soggetto"}
+    {"da": 0, "a": 1, "etichetta_it": "soggetto"}
   ]
 }
 
 REGOLE:
 - "parole" contiene un oggetto per ogni parola della frase, nell'ordine in cui compare (puoi omettere la punteggiatura finale).
-- "pos" e' una sigla breve in maiuscolo tra: PRON, VERB, DET, NOUN, ADJ, ADV, PREP, CONJ, NUM, INTERJ, PART.
+- "pos" e' una sigla breve in maiuscolo, in italiano, tra: PRON (pronome), VERBO, ART (articolo), NOME, AGG (aggettivo), AVV (avverbio), PREP (preposizione), CONG (congiunzione), NUM (numerale), INTER (interiezione), PART (particella).
 - "analisi" e' l'analisi grammaticale completa nello stile della grammatica scolastica italiana tradizionale (es. "Voce del verbo mangiare, prima coniugazione, modo indicativo, tempo presente, prima persona singolare, transitivo").
 - "predicato" indica il predicato principale della frase: "indice" e' l'indice (a partire da 0) della parola che lo esprime (di solito il verbo principale, oppure la copula "essere" in un predicato nominale) e "tipo" vale "verbale" o "nominale". Se manca un vero predicato (es. frase nominale senza verbo), metti "indice": null e "tipo": null.
 - "archi" descrive le relazioni sintattiche principali dell'analisi logica, ESCLUSO il predicato stesso (che e' gia' indicato a parte): soggetto, complemento oggetto, complemento di specificazione, attributo, apposizione, articolo, complementi indiretti (specificando il tipo), ecc.
 - In ogni arco, "da" e' l'indice (a partire da 0) della parola dipendente/modificatrice e "a" e' l'indice della parola reggente (la testa della relazione): la freccia disegnata puntera' verso la parola reggente.
-- "etichetta" e' una sigla breve in stile Universal Dependencies (nsubj, det, obj, amod, obl, ecc.) e "etichetta_it" e' il nome italiano tradizionale della funzione logica (soggetto, articolo, complemento oggetto, attributo, complemento di specificazione, ecc.). Non usare l'etichetta "root" per il predicato: quello va solo nel campo "predicato".
+- "etichetta_it" e' il nome italiano tradizionale della funzione logica (soggetto, articolo, complemento oggetto, attributo, complemento di specificazione, ecc.). Non usare l'etichetta "predicato" qui: quello va solo nel campo "predicato" a parte.
 - Includi solo le relazioni sintattiche principali e davvero utili per far capire la struttura della frase allo studente: evita archi ridondanti o troppo minuti.
 - Se la frase e' ambigua, scegli l'interpretazione piu' naturale e comune.
 - Se la frase e' vuota o priva di senso compiuto, restituisci comunque un JSON valido con le liste vuote e "predicato" a valori null."""

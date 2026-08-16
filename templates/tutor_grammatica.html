@@ -918,6 +918,27 @@ function disegnaAlberoSintattico(containerId, parole, archi) {
     svg.appendChild(g);
   });
 
+  // --- Colori degli archi ---
+  // Ogni arco riceve un colore diverso da quello di qualunque altro arco con cui
+  // potrebbe essere confuso: se condividono una parola (stessa "da" o "a", anche
+  // incrociate) oppure se i loro intervalli di parole si sovrappongono. Cosi',
+  // dove piu' frecce convergono sulla stessa parola, ogni freccia/etichetta ha
+  // un colore proprio e si capisce subito quale etichetta appartiene a quale arco.
+  const paletteArchi = ['#0d9268', '#2563eb', '#db2777', '#d97706', '#7c3aed', '#0891b2', '#dc2626', '#65a30d', '#c026d3', '#0f766e'];
+  function archiInConflitto(a, b) {
+    if (a.da === b.da || a.a === b.a || a.da === b.a || a.a === b.da) return true;
+    const [s1, e1] = span(a), [s2, e2] = span(b);
+    return !(e1 < s2 || e2 < s1);
+  }
+  const coloriArchi = archi.map(() => null);
+  archi.forEach((arco, i) => {
+    const usati = new Set();
+    for (let j = 0; j < i; j++) {
+      if (archiInConflitto(arco, archi[j])) usati.add(coloriArchi[j]);
+    }
+    coloriArchi[i] = paletteArchi.find(c => !usati.has(c)) || paletteArchi[i % paletteArchi.length];
+  });
+
   // --- Archi ---
   const yBase = yParole - 32;
   archi.forEach((arco, i) => {
@@ -925,30 +946,31 @@ function disegnaAlberoSintattico(containerId, parole, archi) {
     const xA = posizioni[arco.a];
     if (xDa === undefined || xA === undefined) return;
 
+    const colore = coloriArchi[i];
     const altezzaArco = alturaBase + livelli[i] * alturaStep;
     const yTop = yBase - altezzaArco;
 
     const path = document.createElementNS(svgNS, 'path');
     path.setAttribute('d', `M${xDa},${yBase} C${xDa},${yTop} ${xA},${yTop} ${xA},${yBase}`);
-    path.setAttribute('stroke', '#0d9268');
+    path.setAttribute('stroke', colore);
     path.setAttribute('stroke-width', '2px');
     path.setAttribute('fill', 'none');
     svg.appendChild(path);
 
     const label = document.createElementNS(svgNS, 'text');
-    label.setAttribute('fill', '#0d9268');
+    label.setAttribute('fill', colore);
     label.setAttribute('font-size', '11px');
-    label.setAttribute('font-weight', '600');
+    label.setAttribute('font-weight', '700');
     label.setAttribute('x', (xDa + xA) / 2);
     label.setAttribute('y', yTop - 6);
     label.setAttribute('text-anchor', 'middle');
-    label.textContent = `${arco.etichetta} (${arco.etichetta_it})`;
+    label.textContent = arco.etichetta_it;
     svg.appendChild(label);
 
     const dim = 6;
     const polygon = document.createElementNS(svgNS, 'polygon');
     polygon.setAttribute('points', `${xA},${yBase + 2} ${xA - dim},${yBase - dim} ${xA + dim},${yBase - dim}`);
-    polygon.setAttribute('fill', '#0d9268');
+    polygon.setAttribute('fill', colore);
     svg.appendChild(polygon);
   });
 
