@@ -24,6 +24,8 @@
     --violet: #9333ea;
     --sky: #0ea5e9;
     --lime: #f97316;
+    --indigo: #6366f1;
+    --amber: #f59e0b;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -106,6 +108,8 @@
   .tutor-card.storia .tutor-icon { background: linear-gradient(135deg, var(--neon-orange), #c2410c); }
   .tutor-card.inglese .tutor-icon { background: linear-gradient(135deg, var(--rose), #be185d); }
   .tutor-card.tedesco .tutor-icon { background: linear-gradient(135deg, var(--gold), #92400e); }
+  .tutor-card.francese .tutor-icon { background: linear-gradient(135deg, var(--indigo), #4338ca); }
+  .tutor-card.spagnolo .tutor-icon { background: linear-gradient(135deg, var(--amber), #b45309); }
   .tutor-card.geografia .tutor-icon { background: linear-gradient(135deg, var(--emerald), #047857); }
   .tutor-card.musica .tutor-icon { background: linear-gradient(135deg, var(--violet), #6b21a8); }
   .tutor-card.tecnologia .tutor-icon { background: linear-gradient(135deg, var(--sky), #0369a1); }
@@ -129,6 +133,8 @@
   .tutor-card.storia .go { color: var(--neon-orange); }
   .tutor-card.inglese .go { color: var(--rose); }
   .tutor-card.tedesco .go { color: var(--gold); }
+  .tutor-card.francese .go { color: var(--indigo); }
+  .tutor-card.spagnolo .go { color: var(--amber); }
   .tutor-card.geografia .go { color: var(--emerald); }
   .tutor-card.musica .go { color: var(--violet); }
   .tutor-card.tecnologia .go { color: var(--sky); }
@@ -302,19 +308,6 @@
 </div>
 
 <div class="cards">
-  <a href="/matematica" class="tutor-card matematica">
-    <div class="tutor-icon">🧬</div>
-    <h2>Luca — Matematica &amp; Scienze</h2>
-    <p>Spiegazioni chiare, esercizi guidati, disegni interattivi con GeoGebra e un almanacco scientifico ogni giorno.</p>
-    <div class="go">Entra nella chat →</div>
-  </a>
-
-  <a href="/arte" class="tutor-card arte">
-    <div class="tutor-icon">🎨</div>
-    <h2>Cinzia — Educazione Artistica</h2>
-    <p>Scopri opere d'arte vere, chiedi di artisti e movimenti, con l'opera del giorno da un museo reale.</p>
-    <div class="go">Entra nella chat →</div>
-  </a>
 
    <a href="/grammatica" class="tutor-card italiano">
     <div class="tutor-icon">📚</div>
@@ -322,10 +315,32 @@
     <p>Viaggia nella lingua e letteratura italiana: risolvi analisi logica e del periodo, interroga autori e scopri il testo classico del giorno.</p>
     <div class="go">Entra nella chat →</div>
   </a>
-    <a href="/storia" class="tutor-card storia">
+
+  <a href="/matematica" class="tutor-card matematica">
+    <div class="tutor-icon">🧬</div>
+    <h2>Luca — Matematica &amp; Scienze</h2>
+    <p>Spiegazioni chiare, esercizi guidati, disegni interattivi con GeoGebra e un almanacco scientifico ogni giorno.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+ <a href="/storia" class="tutor-card storia">
     <div class="tutor-icon">🏛️</div>
-    <h2>Lucio — Storia</h2>
+    <h2>Cesare — Storia</h2>
     <p>Viaggia nel tempo fino all'Antica Roma e oltre: esplora battaglie, alleanze e la vita quotidiana della gente, con il fatto storico del giorno.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+   <a href="/geografia" class="tutor-card geografia">
+    <div class="tutor-icon">🌍</div>
+    <h2>Frida — Geografia</h2>
+    <p>Esplora il pianeta tra montagne, climi, stati e culture: scopri il luogo del giorno e mettiti alla prova con l'atlante interattivo.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+  <a href="/arte" class="tutor-card arte">
+    <div class="tutor-icon">🎨</div>
+    <h2>Cinzia — Educazione Artistica</h2>
+    <p>Scopri opere d'arte vere, chiedi di artisti e movimenti, con l'opera del giorno da un museo reale.</p>
     <div class="go">Entra nella chat →</div>
   </a>
 
@@ -343,10 +358,17 @@
     <div class="go">Entra nella chat →</div>
   </a>
 
-  <a href="/geografia" class="tutor-card geografia">
-    <div class="tutor-icon">🌍</div>
-    <h2>Frida — Geografia</h2>
-    <p>Esplora il pianeta tra montagne, climi, stati e culture: scopri il luogo del giorno e mettiti alla prova con l'atlante interattivo.</p>
+  <a href="/francese" class="tutor-card francese">
+    <div class="tutor-icon">🇫🇷</div>
+    <h2>Chloé — Francese</h2>
+    <p>Scopri la lingua francese passo dopo passo: grammatica, vocabolario e pratica con la parola del giorno e le canzoni in francese.</p>
+    <div class="go">Entra nella chat →</div>
+  </a>
+
+  <a href="/spagnolo" class="tutor-card spagnolo">
+    <div class="tutor-icon">🇪🇸</div>
+    <h2>Inés — Spagnolo</h2>
+    <p>Scopri la lingua spagnola passo dopo passo: grammatica, vocabolario e pratica con la parola del giorno e le canzoni in spagnolo.</p>
     <div class="go">Entra nella chat →</div>
   </a>
 
@@ -387,7 +409,7 @@
     <p>I tutor di Pronti, vIA! sono realizzati con modelli di intelligenza artificiale linguistica, usati tramite API. Il modello genera ogni risposta in tempo reale a partire dalla domanda dello studente: non sono risposte pre-scritte.</p>
 
     <h4>📚 Tutor specializzati per materia</h4>
-    <p>Ogni tutor (Matematica, Arte, Italiano, Storia, Inglese, Tedesco, Geografia, Musica, Tecnologia, Scienze Motorie) ha istruzioni specifiche per la propria disciplina e un tono adatto agli studenti delle scuole medie. Ogni tutor è impostato per restare nel proprio ambito e indirizzare lo studente verso un insegnante o un adulto quando la domanda esce da quell'ambito.</p>
+    <p>Ogni tutor (Matematica, Arte, Italiano, Storia, Inglese, Tedesco, Francese, Spagnolo, Geografia, Musica, Tecnologia, Scienze Motorie) ha istruzioni specifiche per la propria disciplina e un tono adatto agli studenti delle scuole medie. Ogni tutor è impostato per restare nel proprio ambito e indirizzare lo studente verso un insegnante o un adulto quando la domanda esce da quell'ambito.</p>
 
     <h4>⚠️ L'IA può sbagliare</h4>
     <p>Anche con le protezioni messe in atto, l'IA può occasionalmente fornire informazioni imprecise, incomplete o interpretare male una domanda. Il tutor è un supporto allo studio, non una fonte definitiva: per verifiche o argomenti delicati resta importante il confronto con un insegnante o un adulto.</p>

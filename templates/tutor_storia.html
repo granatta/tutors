@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucio — Il tuo Super Tutor di Storia</title>
+<title>Cesare — Il tuo Super Tutor di Storia</title>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap');
@@ -390,7 +390,7 @@
   <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
   <div class="logo">🏛️</div>
   <div class="header-text">
-    <h1>Lucio</h1>
+    <h1>Cesare</h1>
     <p>📜 Storia · Grandi Civiltà &amp; Eventi · Scuole Medie</p>
   </div>
 </header>
@@ -426,7 +426,7 @@
         <div class="welcome" id="welcome">
           <div class="big-icon">🏛️</div>
           <h2>Pronto a viaggiare nel tempo?</h2>
-          <p>Sono Lucio, il tuo tutor di storia. Dai faraoni d'Egitto alle guerre mondiali, chiedimi qualsiasi fatto, causa o personaggio!</p>
+          <p>Sono Cesare, il tuo tutor di storia. Dai faraoni d'Egitto alle guerre mondiali, chiedimi qualsiasi fatto, causa o personaggio!</p>
           <div class="suggestions">
             <button class="suggestion" onclick="sendSuggestion(this)"><span>🏛️</span>Quali furono le cause della caduta dell'Impero Romano?</button>
             <button class="suggestion" onclick="sendSuggestion(this)"><span>🏰</span>Come funzionava il sistema feudale nel Medioevo?</button>
@@ -438,7 +438,7 @@
 
       <div class="input-area">
         <div class="input-row">
-          <textarea id="input" placeholder="Chiedi qualcosa a Lucio... (es. spiegami la Rivoluzione Francese)" rows="1"></textarea>
+          <textarea id="input" placeholder="Chiedi qualcosa a Cesare... (es. spiegami la Rivoluzione Francese)" rows="1"></textarea>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()">🚀</button>
         </div>
         <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
@@ -532,7 +532,7 @@ async function caricaAlmanacco() {
         <div class="alm-card-text"><strong>${a.storia_titolo}</strong><br><br>${a.storia_testo}</div>
       </div>
       <div class="alm-card">
-        <div class="alm-card-title">❓ Quiz di Lucio</div>
+        <div class="alm-card-title">❓ Quiz di Cesare</div>
         <div class="alm-card-text">${a.indovinello}</div>
         <span class="alm-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Rivela Risposta 👁️‍🗨️</span>
         <div class="alm-soluzione">${a.soluzione_indovinello}</div>

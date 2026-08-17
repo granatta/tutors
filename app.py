@@ -8,6 +8,8 @@ from materie.grammatica import grammatica_bp
 from materie.storia import storia_bp
 from materie.inglese import inglese_bp
 from materie.tedesco import tedesco_bp
+from materie.francese import francese_bp
+from materie.spagnolo import spagnolo_bp
 from materie.geografia import geografia_bp
 from materie.musica import musica_bp
 from materie.tecnologia import tecnologia_bp
@@ -23,6 +25,8 @@ app.register_blueprint(storia_bp)
 app.register_blueprint(inglese_bp)
 app.register_blueprint(tedesco_bp)
 app.register_blueprint(geografia_bp)
+app.register_blueprint(francese_bp)
+app.register_blueprint(spagnolo_bp)
 app.register_blueprint(musica_bp)
 app.register_blueprint(tecnologia_bp)
 app.register_blueprint(scienze_motorie_bp)

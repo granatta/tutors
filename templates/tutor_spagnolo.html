@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klara — Il tuo Tutor di Tedesco</title>
+<title>Inés — Il tuo Tutor di Spagnolo</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
@@ -305,7 +305,7 @@
 
   .draw-frame {
     width: 100%;
-     height: 100%;
+    height: 100%;
     flex: 1;
     min-height: 0;
     border: none;
@@ -345,10 +345,10 @@
 
 <header>
   <a href="/" style="color:var(--ink-soft); text-decoration:none; font-size:13px; font-weight:600; margin-right:4px;">← Home</a>
-  <div class="logo">🇩🇪</div>
+  <div class="logo">🇪🇸</div>
   <div class="header-text">
-    <h1>Klara</h1>
-    <p>🗣️ Lingua Tedesca · Scuole Medie</p>
+    <h1>Inés</h1>
+    <p>🗣️ Lingua Spagnola · Scuole Medie</p>
   </div>
 </header>
 
@@ -365,29 +365,29 @@
     <aside class="sidebar">
       <div class="sidebar-header">📖 Parola del giorno</div>
       <div class="sidebar-content-inner" id="parolaContent">
-        <div class="opera-loading">🇩🇪 Sto scegliendo la parola di oggi...</div>
+        <div class="opera-loading">🇪🇸 Sto scegliendo la parola di oggi...</div>
       </div>
     </aside>
 
     <div class="chat-column">
       <div class="chat" id="chat">
         <div class="welcome" id="welcome">
-          <div class="big-icon">🇩🇪</div>
-          <h2>Bereit, dein Deutsch zu üben??</h2>
-          <p>Sono Klara, la tua tutor di tedesco. Chiedimi il significato di una parola, aiuto con la grammatica o facciamo un piccolo dialogo insieme!</p>
+          <div class="big-icon">🇪🇸</div>
+          <h2>¿Listo/a para practicar tu español?</h2>
+          <p>Sono Inés, la tua tutor di spagnolo. Chiedimi il significato di una parola, aiuto con la grammatica o facciamo un piccolo dialogo insieme!</p>
           <div class="suggestions">
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>❓</span>Cosa vuol dire "obwohl"?</button>
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>📝</span>Spiegami il Präsens</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>❓</span>Cosa vuol dire "aunque"?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>📝</span>Spiegami il presente indicativo</button>
             <button class="suggestion" onclick="sendSuggestion(this)"><span>💬</span>Facciamo un dialogo al ristorante</button>
-            <button class="suggestion" onclick="sendSuggestion(this)"><span>🔤</span>Come si pronuncia "Vogel"?</button>
+            <button class="suggestion" onclick="sendSuggestion(this)"><span>🔤</span>Come si pronuncia "pájaro"?</button>
           </div>
         </div>
       </div>
 
       <div class="input-area">
         <div class="input-row">
-          <textarea id="input" placeholder="Chiedi qualcosa a Klara... (es. cosa vuol dire 'Wetter'?)" rows="1"></textarea>
-          <button class="send-btn" id="sendBtn" onclick="sendMessage()">🇩🇪</button>
+          <textarea id="input" placeholder="Chiedi qualcosa a Inés... (es. cosa vuol dire 'tiempo'?)" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">🇪🇸</button>
         </div>
         <div class="input-hint">Premi Invio per spedire · Shift+Invio per andare a capo</div>
       </div>
@@ -399,8 +399,8 @@
     <div class="tool-launch">
       <div class="tool-launch-icon">🎧</div>
       <h2>LyricsTraining</h2>
-      <p>Impara il tedesco completando i testi delle canzoni mentre guardi i video musicali: un ottimo modo per esercitare listening e vocabolario in modo divertente.</p>
-      <a class="tool-launch-btn" href="https://lyricstraining.com/de" target="_blank" rel="noopener">
+      <p>Impara lo spagnolo completando i testi delle canzoni mentre guardi i video musicali: un ottimo modo per esercitare listening e vocabolario in modo divertente.</p>
+      <a class="tool-launch-btn" href="https://lyricstraining.com/es" target="_blank" rel="noopener">
           <img src="/static/lyrics.jpg" alt="Esercizio LearningApps" style="width: 30%;">
       </a>
 
@@ -448,7 +448,7 @@ function sendSuggestion(btn) {
 async function caricaParolaDelGiorno(forza = false) {
   const el = document.getElementById('parolaContent');
   try {
-    const res = await fetch(forza ? '/parola-del-giorno-tedesco?forza=1' : '/parola-del-giorno-tedesco');
+    const res = await fetch(forza ? '/parola-del-giorno-spagnolo?forza=1' : '/parola-del-giorno-spagnolo');
     const p = await res.json();
     if (p.errore) throw new Error(p.errore);
 
@@ -463,7 +463,7 @@ async function caricaParolaDelGiorno(forza = false) {
       </div>
       <div class="art-card">
         <div class="art-card-title">💬 Esempio</div>
-        <div class="art-card-text"><em>${p.frase_esempio_de}</em><br>${p.frase_esempio_it}</div>
+        <div class="art-card-text"><em>${p.frase_esempio_es}</em><br>${p.frase_esempio_it}</div>
       </div>
       <div class="art-card">
         <div class="art-card-title">🎯 Curiosità</div>
@@ -482,7 +482,7 @@ function addMessage(role, content) {
   msg.className = `msg ${role}`;
   const avatar = document.createElement('div');
   avatar.className = 'avatar';
-  avatar.textContent = role === 'user' ? '👤' : '🇩🇪';
+  avatar.textContent = role === 'user' ? '👤' : '🇪🇸';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.innerHTML = formatContent(content);
@@ -498,7 +498,7 @@ function addTyping() {
   const msg = document.createElement('div');
   msg.className = 'msg ai'; msg.id = 'typing';
   const avatar = document.createElement('div');
-  avatar.className = 'avatar'; avatar.textContent = '🇩🇪';
+  avatar.className = 'avatar'; avatar.textContent = '🇪🇸';
   const bubble = document.createElement('div');
   bubble.className = 'bubble typing';
   bubble.innerHTML = '<span></span><span></span><span></span>';
@@ -527,7 +527,7 @@ async function sendMessage() {
   addTyping();
 
   try {
-    const res = await fetch('/chat-tedesco', {
+    const res = await fetch('/chat-spagnolo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: history })
