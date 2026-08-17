@@ -106,16 +106,26 @@
   .main-layout { flex: 1; display: flex; overflow: hidden; min-height: 0; background: #0e0813; }
 
   .tab-content {
-    display: none;
-    width: 100%;
-    height: 100%;
-    flex: 1;
-    overflow: hidden;
-  }
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  /* Mantiene il calcolo delle dimensioni nel DOM ed evita l'azzeramento ad altezza 0 */
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
 
-  .tab-content.active-content {
-    display: flex;
-  }
+.tab-content.active-content {
+  position: relative;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  pointer-events: auto;
+  display: flex;
+}
 
   .chat-column { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; }
 
@@ -410,8 +420,8 @@
   <!-- TAB BABADUM -->
   <div id="babadumTab" class="tab-content">
     <div class="draw-wrap">
-      <iframe class="draw-frame" src="https://babadum.com/" title="Ba Ba Dum" allow="autoplay"></iframe>
-    </div>
+      <!-- Rimuovi src iniziale e usa data-src -->
+     <iframe id="babadumFrame" class="draw-frame" data-src="https://babadum.com/" title="Ba Ba Dum" allow="autoplay; storage-access" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe></div>
   </div><!-- /babadumTab -->
 
 </div><!-- /main-layout -->
@@ -429,6 +439,14 @@ function switchTab(tabId, element) {
 
   element.classList.add('active');
   document.getElementById(tabId).classList.add('active-content');
+
+  // Se si attiva il tab Babadum, carica il link se non è ancora stato caricato
+  if (tabId === 'babadumTab') {
+    const iframe = document.getElementById('babadumFrame');
+    if (!iframe.src) {
+      iframe.src = iframe.getAttribute('data-src');
+    }
+  }
 }
 
 input.addEventListener('input', () => {
